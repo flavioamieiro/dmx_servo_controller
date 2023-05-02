@@ -1,6 +1,9 @@
 /*
- * Based on example code by Jostein Løwer
+ * Copyright (c) 2021 Jostein Løwer 
  *
+ * SPDX-License-Identifier: BSD-3-Clause
+ * 
+ * Description: 
  * Starts a DMX Input on GPIO pin 0 and read channel 1-3 repeatedly
  */
 
