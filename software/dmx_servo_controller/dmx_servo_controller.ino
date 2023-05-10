@@ -14,7 +14,15 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 64
 
-//#define DEBUG
+
+// Minimum and maximum pwm values to set as -90/90 degrees.
+// We found by testing in the servos we had that the following
+// min/max values result in a 180 rotation range.
+#define DEFAULT_SERVO_MIN 128
+#define DEFAULT_SERVO_MAX 512
+#define DEFAULT_SERVO_DMX_VALUE 127
+
+#define DEBUG
 
 DmxInput dmxInput;
 volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(START_CHANNEL, NUM_CHANNELS)];
@@ -23,19 +31,32 @@ Adafruit_SH1106G display = Adafruit_SH1106G(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 
-// Minimum and maximum pwm values to set as -90/90 degrees.
-// We found by testing in the servos we had that the following
-// min/max values result in a 180 rotation range.
-int servo_min = 128;
-int servo_max = 512;
+struct Servo {
+  int dmx_channel;
+  int pwm_channel;
+  int dmx_value;
+  int min_pos;
+  int max_pos;
+  int last_update;
+};
 
-int pos = 0;
-int last_update = 0;
+struct Servo servos[NUM_CHANNELS];
 
 void setup()
 {
     // Setup our DMX Input to read on GPIO 0, from channel 1 to NUM_CHANNELS+1
     dmxInput.begin(0, START_CHANNEL, NUM_CHANNELS);
+
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+      servos[i].dmx_channel = i+1;
+      servos[i].pwm_channel = i;
+      servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
+      servos[i].min_pos = DEFAULT_SERVO_MIN;
+      servos[i].max_pos = DEFAULT_SERVO_MAX;
+      servos[i].last_update = 0;
+    };
+
+
 
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
@@ -64,13 +85,6 @@ void setup()
     pwm.setPWMFreq(50);
 }
 
-void show_channel_value(int n, int value) {
-        display.print("Channel ");
-        display.print(n);
-        display.print(": ");
-        display.println(value);
-}
-
 void loop()
 {
     // Wait for next DMX packet
@@ -79,36 +93,36 @@ void loop()
     display.clearDisplay();
     display.setCursor(0,0);
 
-    for (uint i = 1; i < sizeof(buffer); i++)
+    for (uint i = 1; i < NUM_CHANNELS+1; i++)
     {
         show_channel_value(i, buffer[i]);
-        if (i == 1) {
-          int current_time = millis();
-          if ((current_time - last_update) >= MIN_MOVE_INTERVAL_MS) {
-            pos = map(buffer[i], 0, 255, servo_min, servo_max);
-            last_update = current_time;
-          }
-        }
-        if (i == 2) {
-          servo_min = map(buffer[i], 0, 255, 0, 800);
-        }
-        if (i == 3) {
-          servo_max = map(buffer[i], 0, 255, 300, 1200);
-        }
+        struct Servo current_servo = servos[i-1];
+        if ((millis() - current_servo.last_update) >= MIN_MOVE_INTERVAL_MS) {
+          update_servo(&current_servo, buffer[i]);
+        };
     }
+    display.display();
+}
 
+void show_channel_value(int n, int value) {
+        display.print("Channel ");
+        display.print(n);
+        display.print(": ");
+        display.println(value);
+}
+
+void update_servo(struct Servo *servo, int new_dmx_value) {
+    servo->dmx_value = new_dmx_value;
+    servo->last_update = millis();
+    int pos = map(servo->dmx_value, 0, 255, servo->min_pos, servo->max_pos);
+    pwm.setPWM(servo->pwm_channel, 0, pos);
 #ifdef DEBUG
     Serial.print("Pos: ");
     Serial.print(pos);
     Serial.print(", min: ");
-    Serial.print(servo_min);
+    Serial.print(servo->min_pos);
     Serial.print(", max: ");
-    Serial.print(servo_max);
+    Serial.print(servo->max_pos);
     Serial.println();
 #endif
-
-    display.display();
-
-    pwm.setPWM(0, 0, pos);
-    pwm.setPWM(15, 0, pos);
 }
