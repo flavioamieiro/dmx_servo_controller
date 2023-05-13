@@ -6,3 +6,8 @@ fp-lib-table
 *.kicad_prl
 *-bak
 __pycache__
+DMX_servo_controller_hardware/MCU_RaspberryPi_and_Boards.pretty/desktop.ini
+DMX_servo_controller_hardware/desktop.ini
+desktop.ini
+software/desktop.ini
+software/dmx_servo_controller/desktop.ini
