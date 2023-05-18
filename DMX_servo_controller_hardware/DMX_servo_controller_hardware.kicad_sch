@@ -1875,6 +1875,7 @@
     )
   )
 
+
   (junction (at 76.2 81.28) (diameter 0) (color 0 0 0 0)
     (uuid 07d1cc6f-0721-4eb5-8c60-56212bc8bfef)
   )
@@ -1895,6 +1896,9 @@
   )
   (junction (at 71.12 160.02) (diameter 0) (color 0 0 0 0)
     (uuid 436deab9-6bee-405c-9eb7-f390a3c26d71)
+  )
+  (junction (at 259.08 34.29) (diameter 0) (color 0 0 0 0)
+    (uuid 43d218bb-92a8-4da0-8254-95b74c0f3db6)
   )
   (junction (at 62.23 129.54) (diameter 0) (color 0 0 0 0)
     (uuid 58ac722a-311c-4185-aec3-73b0c864547c)
@@ -4167,7 +4171,7 @@
     (property "Datasheet" "" (at 17.78 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid d645c66b-7712-4ede-a4a1-0d2178cd1921))
+    (pin "1" (uuid a7463372-de4a-4dab-b5c6-675deb9cb746))
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
@@ -5136,6 +5140,31 @@
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
           (reference "TP8") (unit 1)
+        )
+      )
+    )
+  )
+
+  (symbol (lib_id "power:PWR_FLAG") (at 259.08 34.29 270) (unit 1)
+    (in_bom yes) (on_board yes) (dnp no)
+    (uuid b1e2549d-21c0-4427-8987-3185e58d3626)
+    (property "Reference" "#FLG04" (at 260.985 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Value" "PWR_FLAG" (at 261.62 33.02 90)
+      (effects (font (size 1.27 1.27)) (justify left))
+    )
+    (property "Footprint" "" (at 259.08 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (property "Datasheet" "~" (at 259.08 34.29 0)
+      (effects (font (size 1.27 1.27)) hide)
+    )
+    (pin "1" (uuid 1a8223f2-8737-4d77-a24a-7230c9ea1515))
+    (instances
+      (project "DMX_servo_controller_hardware"
+        (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
+          (reference "#FLG04") (unit 1)
         )
       )
     )
