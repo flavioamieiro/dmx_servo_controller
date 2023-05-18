@@ -376,7 +376,7 @@
   (symbol (lib_id "Connector_Generic:Conn_01x03") (at 205.74 100.33 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 6e1d9aa4-ab31-476a-a1d3-7aab35bc4161)
-    (property "Reference" "J14" (at 208.28 99.695 0)
+    (property "Reference" "J15" (at 208.28 99.695 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Conn_01x03" (at 208.28 102.235 0)
@@ -394,7 +394,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613/0cee26af-036e-49cb-9cbc-72ff24614e19"
-          (reference "J14") (unit 1)
+          (reference "J15") (unit 1)
         )
       )
     )
@@ -451,7 +451,7 @@
           (reference "D?") (unit 1)
         )
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613/0cee26af-036e-49cb-9cbc-72ff24614e19"
-          (reference "D1") (unit 1)
+          (reference "D2") (unit 1)
         )
       )
     )
@@ -460,7 +460,7 @@
   (symbol (lib_id "Connector:XLR3") (at 118.11 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d923ad1f-7b09-406e-b57a-e579a786cf21)
-    (property "Reference" "J16" (at 118.11 85.09 0)
+    (property "Reference" "J14" (at 118.11 85.09 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "XLR3" (at 118.11 87.63 0)
@@ -478,7 +478,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613/0cee26af-036e-49cb-9cbc-72ff24614e19"
-          (reference "J16") (unit 1)
+          (reference "J14") (unit 1)
         )
       )
     )
