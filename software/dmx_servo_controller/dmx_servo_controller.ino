@@ -51,20 +51,6 @@ struct Servo servos[NUM_CHANNELS];
 
 void setup()
 {
-    // Setup our DMX Input to read on GPIO 0, from channel 1 to NUM_CHANNELS+1
-    dmxInput.begin(0, START_CHANNEL, NUM_CHANNELS);
-
-    for (int i = 0; i < NUM_CHANNELS; i++) {
-      servos[i].dmx_channel = i+1;
-      servos[i].pwm_channel = i;
-      servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
-      servos[i].min_pos = DEFAULT_SERVO_MIN;
-      servos[i].max_pos = DEFAULT_SERVO_MAX;
-      servos[i].last_update = 0;
-    };
-
-
-
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
     delay(10);
@@ -80,39 +66,48 @@ void setup()
     Serial.println("STARTING DMX INPUT");
 #endif
 
+    // Setup our DMX Input to read on GPIO 0, from channel 1 to NUM_CHANNELS+1
+    dmxInput.begin(0, START_CHANNEL, NUM_CHANNELS);
     display.begin(0x3C, true);
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(SH110X_WHITE);
-    display.setCursor(6,0);
-    display.println("DMX servo controller");
-    display.println();
-    display.println();
-    display.println();
-    display.println();
-    display.println("Waiting for input...");
-    display.display();
-
     pwm.begin();
     pwm.setPWMFreq(50);
+
+    initialize_servos();
+    show_splash_screen();
 }
 
 void loop()
 {
     // Wait for next DMX packet
     dmxInput.read(buffer);
+    handle_dmx_message();
+    handle_rotary_encoder();
+    update_display();
+}
 
+void update_display() {
     display.clearDisplay();
     display.setCursor(0,0);
 
+    for (uint i = 0; i < NUM_CHANNELS; i++)
+    {
+        show_channel_value(i+1, servos[i].dmx_value);
+    }
+
+    display.display();
+}
+
+void handle_dmx_message() {
     for (uint i = 1; i < NUM_CHANNELS+1; i++)
     {
-        show_channel_value(i, buffer[i]);
-        struct Servo current_servo = servos[i-1];
-        if ((millis() - current_servo.last_update) >= MIN_MOVE_INTERVAL_MS) {
-          update_servo(&current_servo, buffer[i]);
+        struct Servo *current_servo = &servos[i-1];
+        if ((millis() - current_servo->last_update) >= MIN_MOVE_INTERVAL_MS) {
+          update_servo(current_servo, buffer[i]);
         };
     }
+}
+
+void handle_rotary_encoder() {
     int curr_rotary_pos = encoder.getPosition();
     RotaryEncoder::Direction direction = encoder.getDirection();
     if (curr_rotary_pos != last_rotary_pos) {
@@ -124,7 +119,6 @@ void loop()
 #endif
     }
     last_rotary_pos = curr_rotary_pos;
-    display.display();
 }
 
 void show_channel_value(int n, int value) {
@@ -134,6 +128,33 @@ void show_channel_value(int n, int value) {
         display.println(value);
 }
 
+void show_splash_screen() {
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(SH110X_WHITE);
+    display.setCursor(6,0);
+    display.println("DMX servo controller");
+    display.println();
+    display.println();
+    display.println();
+    display.println();
+    display.println("Waiting for input...");
+    display.display();
+}
+
+
+void initialize_servos() {
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+      servos[i].dmx_channel = i+1;
+      servos[i].pwm_channel = i;
+      servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
+      servos[i].min_pos = DEFAULT_SERVO_MIN;
+      servos[i].max_pos = DEFAULT_SERVO_MAX;
+      servos[i].last_update = 0;
+    }
+}
+
+
 void update_servo(struct Servo *servo, int new_dmx_value) {
     servo->dmx_value = new_dmx_value;
     servo->last_update = millis();
@@ -141,7 +162,9 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     pwm.setPWM(servo->pwm_channel, 0, pos);
 #ifdef DEBUG
 #ifdef PRINT_DMX_MESSAGES
-    Serial.print("Pos: ");
+    Serial.print("dmx_value: ");
+    Serial.print(servo->dmx_value);
+    Serial.print(", pos: ");
     Serial.print(pos);
     Serial.print(", min: ");
     Serial.print(servo->min_pos);
