@@ -4,6 +4,7 @@
 #include <Adafruit_SH110X.h> // https://github.com/adafruit/Adafruit_SH110x
 #include <Adafruit_PWMServoDriver.h> // https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
 #include <DmxInput.h> // https://github.com/jostlowe/Pico-DMX
+#include <RotaryEncoder.h> // https://github.com/mathertel/RotaryEncoder
 
 
 #define START_CHANNEL 1
@@ -14,6 +15,9 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 64
 
+#define PIN_ENCODER_A 16
+#define PIN_ENCODER_B 17
+#define PIN_ENCODER_PUSH 18
 
 // Minimum and maximum pwm values to set as -90/90 degrees.
 // We found by testing in the servos we had that the following
@@ -30,6 +34,9 @@ volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(START_CHANNEL, NUM_CHANNELS)];
 Adafruit_SH1106G display = Adafruit_SH1106G(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire);
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
+
+RotaryEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B, RotaryEncoder::LatchMode::TWO03);
+int last_rotary_pos = 0;
 
 struct Servo {
   int dmx_channel;
@@ -62,6 +69,11 @@ void setup()
     digitalWrite(LED_BUILTIN, HIGH);
     delay(10);
     digitalWrite(LED_BUILTIN, LOW);
+
+    pinMode(PIN_ENCODER_PUSH, INPUT_PULLUP);
+    attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_A), update_encoder_position, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_B), update_encoder_position, CHANGE);
+    attachInterrupt(digitalPinToInterrupt(PIN_ENCODER_PUSH), encoder_pushed, FALLING);
 
 #ifdef DEBUG
     Serial.begin(9600);
@@ -101,6 +113,17 @@ void loop()
           update_servo(&current_servo, buffer[i]);
         };
     }
+    int curr_rotary_pos = encoder.getPosition();
+    RotaryEncoder::Direction direction = encoder.getDirection();
+    if (curr_rotary_pos != last_rotary_pos) {
+#ifdef DEBUG
+      Serial.print("Encoder value: ");
+      Serial.print(curr_rotary_pos);
+      Serial.print(" direction: ");
+      Serial.println((int)direction);
+#endif
+    }
+    last_rotary_pos = curr_rotary_pos;
     display.display();
 }
 
@@ -117,6 +140,7 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     int pos = map(servo->dmx_value, 0, 255, servo->min_pos, servo->max_pos);
     pwm.setPWM(servo->pwm_channel, 0, pos);
 #ifdef DEBUG
+#ifdef PRINT_DMX_MESSAGES
     Serial.print("Pos: ");
     Serial.print(pos);
     Serial.print(", min: ");
@@ -125,4 +149,15 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     Serial.print(servo->max_pos);
     Serial.println();
 #endif
+#endif
+}
+
+void encoder_pushed() {
+#ifdef DEBUG
+  Serial.println("Encoder pushed");
+#endif
+}
+
+void update_encoder_position() {
+  encoder.tick();
 }
