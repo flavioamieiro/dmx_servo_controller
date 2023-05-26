@@ -382,7 +382,7 @@
     (property "Value" "Conn_01x03" (at 208.28 102.235 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "" (at 205.74 100.33 0)
+    (property "Footprint" "Connector_JST:JST_XH_B3B-XH-AM_1x03_P2.50mm_Vertical" (at 205.74 100.33 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 205.74 100.33 0)
