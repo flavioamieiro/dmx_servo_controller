@@ -4898,7 +4898,7 @@
     (property "Value" "Reset" (at 209.55 96.52 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "" (at 209.55 88.9 0)
+    (property "Footprint" "Button_Switch_SMD:SW_SPST_TL3342" (at 209.55 88.9 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (at 209.55 88.9 0)
