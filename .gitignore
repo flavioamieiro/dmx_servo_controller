@@ -6,6 +6,7 @@ fp-lib-table
 *.kicad_prl
 *-bak
 __pycache__
+\#auto_saved_files#
 DMX_servo_controller_hardware/MCU_RaspberryPi_and_Boards.pretty/desktop.ini
 DMX_servo_controller_hardware/desktop.ini
 desktop.ini
