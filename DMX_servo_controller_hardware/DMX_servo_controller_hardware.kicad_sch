@@ -5977,7 +5977,7 @@
     (property "Value" "SN65HVD11HD" (at 111.0106 67.4171 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
-    (property "Footprint" "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" (at 110.49 55.88 0)
+    (property "Footprint" "Package_DIP:DIP-8_W7.62mm" (at 110.49 55.88 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "http://www.ti.com/lit/ds/symlink/sn65hvd11-ht.pdf" (at 110.49 53.34 0)
