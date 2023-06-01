@@ -3976,7 +3976,7 @@
     (property "Value" "6N137" (at 151.13 59.69 0)
       (effects (font (size 1.27 1.27)))
     )
-    (property "Footprint" "Package_DIP:DIP-8_W7.62mm" (at 151.13 81.28 0)
+    (property "Footprint" "DMX_servo_controller_hardware:6N137-X007T" (at 151.13 81.28 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "https://docs.broadcom.com/docs/AV02-0940EN" (at 129.54 54.61 0)
