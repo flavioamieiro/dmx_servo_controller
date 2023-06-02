@@ -3576,7 +3576,7 @@
   (symbol (lib_id "power:+5V") (at 63.5 24.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0183edbc-a034-4fb2-821b-9f3c6f02a2b3)
-    (property "Reference" "#PWR058" (at 63.5 27.94 0)
+    (property "Reference" "#PWR05" (at 63.5 27.94 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 63.5 20.32 0)
@@ -3592,7 +3592,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR058") (unit 1)
+          (reference "#PWR05") (unit 1)
         )
       )
     )
@@ -3601,7 +3601,7 @@
   (symbol (lib_id "Device:C_Small") (at 115.57 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 01aae094-5be1-4de0-806c-5c3dc498b583)
-    (property "Reference" "C3" (at 118.11 27.94 0)
+    (property "Reference" "C2" (at 118.11 27.94 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (at 118.11 30.48 0)
@@ -3618,7 +3618,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C3") (unit 1)
+          (reference "C2") (unit 1)
         )
       )
     )
@@ -3627,7 +3627,7 @@
   (symbol (lib_id "power:GNDA") (at 87.63 95.25 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 02040c46-f002-46b8-97ea-eb6713716906)
-    (property "Reference" "#PWR012" (at 87.63 101.6 0)
+    (property "Reference" "#PWR031" (at 87.63 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 87.63 100.33 0)
@@ -3643,7 +3643,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR012") (unit 1)
+          (reference "#PWR031") (unit 1)
         )
       )
     )
@@ -3652,7 +3652,7 @@
   (symbol (lib_id "power:GND") (at 259.08 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 028b6101-92db-4cfc-9668-bf1ccd52ae5d)
-    (property "Reference" "#PWR051" (at 259.08 72.39 0)
+    (property "Reference" "#PWR020" (at 259.08 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 261.62 66.04 0)
@@ -3668,7 +3668,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR051") (unit 1)
+          (reference "#PWR020") (unit 1)
         )
       )
     )
@@ -3677,7 +3677,7 @@
   (symbol (lib_id "power:+5VA") (at 87.63 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 05f74325-e8c9-43a2-91ab-d9cf39d31d57)
-    (property "Reference" "#PWR011" (at 87.63 64.77 0)
+    (property "Reference" "#PWR015" (at 87.63 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5VA" (at 87.63 57.15 0)
@@ -3693,7 +3693,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR011") (unit 1)
+          (reference "#PWR015") (unit 1)
         )
       )
     )
@@ -3702,7 +3702,7 @@
   (symbol (lib_id "power:GNDA") (at 172.72 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0c3d91b2-f2d3-49a2-98bf-8bd422ef5539)
-    (property "Reference" "#PWR021" (at 172.72 40.64 0)
+    (property "Reference" "#PWR08" (at 172.72 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 172.72 39.37 0)
@@ -3718,7 +3718,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR021") (unit 1)
+          (reference "#PWR08") (unit 1)
         )
       )
     )
@@ -3727,7 +3727,7 @@
   (symbol (lib_id "power:GND") (at 213.36 66.04 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0c439350-122b-4b02-97eb-9a0430e6dc10)
-    (property "Reference" "#PWR040" (at 213.36 72.39 0)
+    (property "Reference" "#PWR019" (at 213.36 72.39 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 210.82 66.04 0)
@@ -3743,7 +3743,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR040") (unit 1)
+          (reference "#PWR019") (unit 1)
         )
       )
     )
@@ -3752,7 +3752,7 @@
   (symbol (lib_id "power:GND") (at 146.05 162.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 0c72f04b-73ec-422b-a249-417c64661ffc)
-    (property "Reference" "#PWR027" (at 146.05 168.91 0)
+    (property "Reference" "#PWR044" (at 146.05 168.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 146.05 167.64 0)
@@ -3768,7 +3768,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR027") (unit 1)
+          (reference "#PWR044") (unit 1)
         )
       )
     )
@@ -3777,7 +3777,7 @@
   (symbol (lib_id "power:GND") (at 110.49 35.56 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 0d747195-fd41-4515-8630-74bfe3ea7486)
-    (property "Reference" "#PWR014" (at 110.49 41.91 0)
+    (property "Reference" "#PWR09" (at 110.49 41.91 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 110.49 40.64 0)
@@ -3793,7 +3793,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR014") (unit 1)
+          (reference "#PWR09") (unit 1)
         )
       )
     )
@@ -3828,7 +3828,7 @@
   (symbol (lib_id "power:+5V") (at 88.9 118.11 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 12b6d549-c872-4de5-a7f8-ea9ee10be62b)
-    (property "Reference" "#PWR015" (at 88.9 121.92 0)
+    (property "Reference" "#PWR038" (at 88.9 121.92 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 88.9 114.3 0)
@@ -3844,7 +3844,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR015") (unit 1)
+          (reference "#PWR038") (unit 1)
         )
       )
     )
@@ -3853,7 +3853,7 @@
   (symbol (lib_id "power:+3.3V") (at 259.08 90.17 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 14c78252-eece-4d8b-b30d-20b76cc702e2)
-    (property "Reference" "#PWR060" (at 259.08 93.98 0)
+    (property "Reference" "#PWR027" (at 259.08 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 259.08 86.36 0)
@@ -3869,7 +3869,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR060") (unit 1)
+          (reference "#PWR027") (unit 1)
         )
       )
     )
@@ -3878,7 +3878,7 @@
   (symbol (lib_id "power:GND") (at 36.83 185.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 1759df82-a7ab-4a59-9a27-c18ca8bbbf7d)
-    (property "Reference" "#PWR08" (at 36.83 191.77 0)
+    (property "Reference" "#PWR050" (at 36.83 191.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 36.83 190.5 0)
@@ -3894,7 +3894,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR08") (unit 1)
+          (reference "#PWR050") (unit 1)
         )
       )
     )
@@ -3903,7 +3903,7 @@
   (symbol (lib_id "Device:R_US") (at 111.76 134.62 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 1c2fb590-217b-4e1b-baa9-d29829ebc818)
-    (property "Reference" "R15" (at 107.95 133.35 90)
+    (property "Reference" "R14" (at 107.95 133.35 90)
       (effects (font (size 0.635 0.635)))
     )
     (property "Value" "220Ω" (at 114.3 133.35 90)
@@ -3920,7 +3920,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R15") (unit 1)
+          (reference "R14") (unit 1)
         )
       )
     )
@@ -3955,7 +3955,7 @@
   (symbol (lib_id "power:+5VA") (at 137.16 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 25b574ef-c99d-4c66-8ef6-940f123d5878)
-    (property "Reference" "#PWR019" (at 137.16 64.77 0)
+    (property "Reference" "#PWR017" (at 137.16 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5VA" (at 137.16 57.15 0)
@@ -3971,7 +3971,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR019") (unit 1)
+          (reference "#PWR017") (unit 1)
         )
       )
     )
@@ -3980,7 +3980,7 @@
   (symbol (lib_id "power:+3.3V") (at 24.13 177.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 28d37c6e-2626-45ce-b60c-9cf9a1391978)
-    (property "Reference" "#PWR05" (at 24.13 181.61 0)
+    (property "Reference" "#PWR046" (at 24.13 181.61 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 24.13 173.99 0)
@@ -3996,7 +3996,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR05") (unit 1)
+          (reference "#PWR046") (unit 1)
         )
       )
     )
@@ -4005,7 +4005,7 @@
   (symbol (lib_id "Isolator:6N137") (at 151.13 68.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 2f83f16e-b397-413e-bb6e-b57d9d8ea839)
-    (property "Reference" "U3" (at 151.13 57.15 0)
+    (property "Reference" "U2" (at 151.13 57.15 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "6N137" (at 151.13 59.69 0)
@@ -4027,7 +4027,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "U3") (unit 1)
+          (reference "U2") (unit 1)
         )
       )
     )
@@ -4036,7 +4036,7 @@
   (symbol (lib_id "Driver_LED:PCA9685PW") (at 88.9 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 30df3023-3431-4e12-b4a0-c5e8678ee28d)
-    (property "Reference" "U1" (at 90.8559 123.19 0)
+    (property "Reference" "U4" (at 90.8559 123.19 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "PCA9685PW" (at 90.8559 125.73 0)
@@ -4079,7 +4079,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "U1") (unit 1)
+          (reference "U4") (unit 1)
         )
       )
     )
@@ -4088,7 +4088,7 @@
   (symbol (lib_id "power:+3.3V") (at 36.83 177.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 31542cd2-9a8f-4c63-9f1d-4aec4a143e62)
-    (property "Reference" "#PWR07" (at 36.83 181.61 0)
+    (property "Reference" "#PWR047" (at 36.83 181.61 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 36.83 173.99 0)
@@ -4104,7 +4104,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR07") (unit 1)
+          (reference "#PWR047") (unit 1)
         )
       )
     )
@@ -4139,7 +4139,7 @@
   (symbol (lib_id "Device:C_Small") (at 271.78 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3d4bfcda-4ea4-4034-acbe-915096c6b3b3)
-    (property "Reference" "C10" (at 274.32 93.3513 0)
+    (property "Reference" "C8" (at 274.32 93.3513 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1μF" (at 274.32 95.8913 0)
@@ -4156,7 +4156,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C10") (unit 1)
+          (reference "C8") (unit 1)
         )
       )
     )
@@ -4165,7 +4165,7 @@
   (symbol (lib_id "Device:R_US") (at 87.63 90.17 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 3fe2f8eb-7149-408a-976e-ef41df17d162)
-    (property "Reference" "R9" (at 89.281 89.3353 0)
+    (property "Reference" "R6" (at 89.281 89.3353 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "680Ω" (at 89.281 91.8722 0)
@@ -4182,7 +4182,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R9") (unit 1)
+          (reference "R6") (unit 1)
         )
       )
     )
@@ -4217,7 +4217,7 @@
   (symbol (lib_id "power:+5VA") (at 110.49 60.96 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 43235c98-5b7b-4685-aebc-9ef39a8f5f2c)
-    (property "Reference" "#PWR017" (at 110.49 64.77 0)
+    (property "Reference" "#PWR016" (at 110.49 64.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5VA" (at 110.49 57.15 0)
@@ -4233,7 +4233,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR017") (unit 1)
+          (reference "#PWR016") (unit 1)
         )
       )
     )
@@ -4293,7 +4293,7 @@
   (symbol (lib_id "power:PWR_FLAG") (at 266.7 44.45 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4848d79e-db0e-4db8-a44a-5625ec439c7f)
-    (property "Reference" "#FLG03" (at 268.605 44.45 0)
+    (property "Reference" "#FLG04" (at 268.605 44.45 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "PWR_FLAG" (at 270.51 45.085 90)
@@ -4309,7 +4309,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#FLG03") (unit 1)
+          (reference "#FLG04") (unit 1)
         )
       )
     )
@@ -4318,7 +4318,7 @@
   (symbol (lib_id "Device:C_Small") (at 24.13 181.61 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 48aae365-a60f-4150-b3bf-b8c148ac9ef9)
-    (property "Reference" "C1" (at 26.67 180.9813 0)
+    (property "Reference" "C9" (at 26.67 180.9813 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (at 26.67 183.5213 0)
@@ -4335,7 +4335,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C1") (unit 1)
+          (reference "C9") (unit 1)
         )
       )
     )
@@ -4344,7 +4344,7 @@
   (symbol (lib_id "power:GNDA") (at 16.51 81.28 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 48f2df55-5c54-479f-a22c-8e79a0061fce)
-    (property "Reference" "#PWR065" (at 16.51 87.63 0)
+    (property "Reference" "#PWR024" (at 16.51 87.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 16.51 86.36 0)
@@ -4360,7 +4360,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR065") (unit 1)
+          (reference "#PWR024") (unit 1)
         )
       )
     )
@@ -4369,7 +4369,7 @@
   (symbol (lib_id "Device:R_US") (at 34.29 123.19 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 4a4d21c5-4fbb-4681-adc9-99beec520f36)
-    (property "Reference" "R2" (at 29.21 120.65 0)
+    (property "Reference" "R9" (at 29.21 120.65 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10kΩ" (at 27.94 123.19 0)
@@ -4386,7 +4386,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R2") (unit 1)
+          (reference "R9") (unit 1)
         )
       )
     )
@@ -4395,7 +4395,7 @@
   (symbol (lib_id "power:+5V") (at 110.49 22.86 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 4c3540fe-ce3a-40d7-ac57-9390c6935e40)
-    (property "Reference" "#PWR013" (at 110.49 26.67 0)
+    (property "Reference" "#PWR02" (at 110.49 26.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 110.49 19.05 0)
@@ -4411,7 +4411,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR013") (unit 1)
+          (reference "#PWR02") (unit 1)
         )
       )
     )
@@ -4473,7 +4473,7 @@
   (symbol (lib_id "Device:R_US") (at 69.85 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5113de57-242f-4ca0-a88f-d99e685aa087)
-    (property "Reference" "R7" (at 64.77 121.92 0)
+    (property "Reference" "R11" (at 64.77 121.92 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10kΩ" (at 63.5 124.46 0)
@@ -4490,7 +4490,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R7") (unit 1)
+          (reference "R11") (unit 1)
         )
       )
     )
@@ -4525,7 +4525,7 @@
   (symbol (lib_id "power:GNDA") (at 36.83 62.23 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 5747c74d-aaac-48ac-b49d-9aed68321d8b)
-    (property "Reference" "#PWR01" (at 36.83 68.58 0)
+    (property "Reference" "#PWR018" (at 36.83 68.58 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 33.02 64.77 0)
@@ -4541,7 +4541,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR01") (unit 1)
+          (reference "#PWR018") (unit 1)
         )
       )
     )
@@ -4550,7 +4550,7 @@
   (symbol (lib_id "power:GND") (at 63.5 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 578505fc-2e0f-43ea-9642-f00a1b1db323)
-    (property "Reference" "#PWR059" (at 63.5 40.64 0)
+    (property "Reference" "#PWR07" (at 63.5 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 63.5 39.37 0)
@@ -4566,7 +4566,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR059") (unit 1)
+          (reference "#PWR07") (unit 1)
         )
       )
     )
@@ -4575,7 +4575,7 @@
   (symbol (lib_id "power:GND") (at 236.22 91.44 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 58c43739-5edd-4f98-8e69-21f58174c8c0)
-    (property "Reference" "#PWR047" (at 236.22 97.79 0)
+    (property "Reference" "#PWR030" (at 236.22 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 236.22 96.52 0)
@@ -4591,7 +4591,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR047") (unit 1)
+          (reference "#PWR030") (unit 1)
         )
       )
     )
@@ -4600,7 +4600,7 @@
   (symbol (lib_id "power:+3.3V") (at 146.05 118.11 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 599e888e-cd4c-4270-831c-5119437ff673)
-    (property "Reference" "#PWR025" (at 146.05 121.92 0)
+    (property "Reference" "#PWR039" (at 146.05 121.92 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 146.05 114.3 0)
@@ -4616,7 +4616,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR025") (unit 1)
+          (reference "#PWR039") (unit 1)
         )
       )
     )
@@ -4625,7 +4625,7 @@
   (symbol (lib_id "Connector_Generic:Conn_01x04") (at 153.67 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5bd0140a-4f05-42a4-80ad-9c8348bd7d00)
-    (property "Reference" "J3" (at 156.21 125.095 0)
+    (property "Reference" "J4" (at 156.21 125.095 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Display" (at 156.21 127.635 0)
@@ -4644,7 +4644,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "J3") (unit 1)
+          (reference "J4") (unit 1)
         )
       )
     )
@@ -4653,7 +4653,7 @@
   (symbol (lib_id "Device:R_US") (at 111.76 139.7 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp yes)
     (uuid 5d63f8e1-b708-43c6-bfb9-6870a76a9aef)
-    (property "Reference" "R17" (at 107.95 138.43 90)
+    (property "Reference" "R16" (at 107.95 138.43 90)
       (effects (font (size 0.635 0.635)))
     )
     (property "Value" "220Ω" (at 114.3 138.43 90)
@@ -4670,7 +4670,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R17") (unit 1)
+          (reference "R16") (unit 1)
         )
       )
     )
@@ -4679,7 +4679,7 @@
   (symbol (lib_id "Pi_Pico:Pico") (at 236.22 58.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 5e84fe7d-b686-4b7a-b389-f48ec0940b26)
-    (property "Reference" "U4" (at 236.22 27.94 0)
+    (property "Reference" "U1" (at 236.22 27.94 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "Pico" (at 236.22 30.48 0)
@@ -4737,7 +4737,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "U4") (unit 1)
+          (reference "U1") (unit 1)
         )
       )
     )
@@ -4746,7 +4746,7 @@
   (symbol (lib_id "Device:C_Small") (at 125.73 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 64af11b7-f6ae-482f-ad68-922b3d704aa4)
-    (property "Reference" "C4" (at 128.27 27.94 0)
+    (property "Reference" "C3" (at 128.27 27.94 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1μF" (at 128.27 30.48 0)
@@ -4763,7 +4763,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C4") (unit 1)
+          (reference "C3") (unit 1)
         )
       )
     )
@@ -4772,7 +4772,7 @@
   (symbol (lib_id "power:+5VA") (at 172.72 22.86 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 65ad0b78-9c5c-43ff-b980-b688b93725f3)
-    (property "Reference" "#PWR020" (at 172.72 26.67 0)
+    (property "Reference" "#PWR03" (at 172.72 26.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5VA" (at 172.72 19.05 0)
@@ -4788,7 +4788,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR020") (unit 1)
+          (reference "#PWR03") (unit 1)
         )
       )
     )
@@ -4797,7 +4797,7 @@
   (symbol (lib_id "power:GND") (at 146.05 132.08 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 660cf9c7-4106-4b1f-8f5b-5272f6407d86)
-    (property "Reference" "#PWR026" (at 146.05 138.43 0)
+    (property "Reference" "#PWR040" (at 146.05 138.43 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 146.05 137.16 0)
@@ -4813,7 +4813,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR026") (unit 1)
+          (reference "#PWR040") (unit 1)
         )
       )
     )
@@ -4822,7 +4822,7 @@
   (symbol (lib_id "Device:C_Small") (at 147.32 87.63 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 69016861-8efe-4eba-8175-c8011112d5fb)
-    (property "Reference" "C7" (at 149.86 87.0013 0)
+    (property "Reference" "C6" (at 149.86 87.0013 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (at 149.86 89.5413 0)
@@ -4839,7 +4839,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C7") (unit 1)
+          (reference "C6") (unit 1)
         )
       )
     )
@@ -4874,7 +4874,7 @@
   (symbol (lib_id "Device:C_Small") (at 153.67 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 6c6d5e5f-9a15-4b2d-8d8a-42b14748aeb9)
-    (property "Reference" "C5" (at 156.21 27.94 0)
+    (property "Reference" "C4" (at 156.21 27.94 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1μF" (at 156.21 30.48 0)
@@ -4891,7 +4891,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C5") (unit 1)
+          (reference "C4") (unit 1)
         )
       )
     )
@@ -4979,7 +4979,7 @@
   (symbol (lib_id "Diode:MRA4003T3G") (at 259.08 27.94 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 74a0ab0e-537e-4470-b6e0-108ab5d26f05)
-    (property "Reference" "D3" (at 261.62 27.305 90)
+    (property "Reference" "D1" (at 261.62 27.305 90)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "C211752 M7" (at 261.62 29.845 90)
@@ -4996,7 +4996,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "D3") (unit 1)
+          (reference "D1") (unit 1)
         )
       )
     )
@@ -5005,7 +5005,7 @@
   (symbol (lib_id "power:+3.3V") (at 147.32 83.82 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 789a3692-c930-45dd-9f3c-ba2a8503eb24)
-    (property "Reference" "#PWR022" (at 147.32 87.63 0)
+    (property "Reference" "#PWR025" (at 147.32 87.63 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 147.32 80.01 0)
@@ -5021,7 +5021,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR022") (unit 1)
+          (reference "#PWR025") (unit 1)
         )
       )
     )
@@ -5030,7 +5030,7 @@
   (symbol (lib_id "Device:R_US") (at 167.64 62.23 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 7a4e04fa-6e7c-41b2-b4c0-ecc7b3b7992e)
-    (property "Reference" "R11" (at 170.18 61.595 0)
+    (property "Reference" "R1" (at 170.18 61.595 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "330Ω" (at 170.18 64.135 0)
@@ -5047,7 +5047,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R11") (unit 1)
+          (reference "R1") (unit 1)
         )
       )
     )
@@ -5056,7 +5056,7 @@
   (symbol (lib_id "power:GND") (at 59.69 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 81ce3e65-1805-45cb-b4ba-a5950d6ee99a)
-    (property "Reference" "#PWR09" (at 59.69 153.67 0)
+    (property "Reference" "#PWR041" (at 59.69 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 59.69 152.4 0)
@@ -5072,7 +5072,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR09") (unit 1)
+          (reference "#PWR041") (unit 1)
         )
       )
     )
@@ -5081,7 +5081,7 @@
   (symbol (lib_id "power:+3.3V") (at 271.78 90.17 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 87ffc4ac-40e8-4528-8856-e9092e4799de)
-    (property "Reference" "#PWR062" (at 271.78 93.98 0)
+    (property "Reference" "#PWR028" (at 271.78 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 271.78 86.36 0)
@@ -5097,7 +5097,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR062") (unit 1)
+          (reference "#PWR028") (unit 1)
         )
       )
     )
@@ -5106,7 +5106,7 @@
   (symbol (lib_id "Device:R_US") (at 111.76 129.54 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 89e5ac2a-d6c4-4f43-842d-bc3c59416b33)
-    (property "Reference" "R13" (at 107.95 128.27 90)
+    (property "Reference" "R12" (at 107.95 128.27 90)
       (effects (font (size 0.635 0.635)))
     )
     (property "Value" "220Ω" (at 114.3 128.27 90)
@@ -5123,7 +5123,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R13") (unit 1)
+          (reference "R12") (unit 1)
         )
       )
     )
@@ -5132,7 +5132,7 @@
   (symbol (lib_id "Device:R_US") (at 198.12 93.98 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 90dee3fa-7456-4737-9905-b48b941f7f8d)
-    (property "Reference" "R12" (at 198.12 96.52 90)
+    (property "Reference" "R7" (at 198.12 96.52 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "10kΩ" (at 198.12 99.06 90)
@@ -5149,7 +5149,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R12") (unit 1)
+          (reference "R7") (unit 1)
         )
       )
     )
@@ -5158,7 +5158,7 @@
   (symbol (lib_id "power:GND") (at 213.36 53.34 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 914390e4-f649-4b1b-b174-cc5c17b2d1e4)
-    (property "Reference" "#PWR039" (at 213.36 59.69 0)
+    (property "Reference" "#PWR012" (at 213.36 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 210.82 53.34 0)
@@ -5174,7 +5174,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR039") (unit 1)
+          (reference "#PWR012") (unit 1)
         )
       )
     )
@@ -5183,7 +5183,7 @@
   (symbol (lib_id "power:GND") (at 30.48 34.29 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9874ca2d-08ce-46f7-942f-efb0ae50d5b9)
-    (property "Reference" "#PWR04" (at 30.48 40.64 0)
+    (property "Reference" "#PWR06" (at 30.48 40.64 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 30.48 39.37 0)
@@ -5199,7 +5199,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR04") (unit 1)
+          (reference "#PWR06") (unit 1)
         )
       )
     )
@@ -5208,7 +5208,7 @@
   (symbol (lib_id "power:+3.3V") (at 191.77 90.17 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9c448784-9afe-413f-a01d-bdac960743cf)
-    (property "Reference" "#PWR034" (at 191.77 93.98 0)
+    (property "Reference" "#PWR026" (at 191.77 93.98 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 191.77 86.36 0)
@@ -5224,7 +5224,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR034") (unit 1)
+          (reference "#PWR026") (unit 1)
         )
       )
     )
@@ -5233,7 +5233,7 @@
   (symbol (lib_id "power:+3.3V") (at 266.7 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid 9e21c04e-5de5-4d9e-aa72-eafa507d4e96)
-    (property "Reference" "#PWR057" (at 266.7 44.45 0)
+    (property "Reference" "#PWR011" (at 266.7 44.45 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 266.7 36.83 0)
@@ -5249,7 +5249,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR057") (unit 1)
+          (reference "#PWR011") (unit 1)
         )
       )
     )
@@ -5258,7 +5258,7 @@
   (symbol (lib_id "Device:R_US") (at 62.23 124.46 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid 9e7253d7-44b4-4c9d-8fda-aabbfe5a8546)
-    (property "Reference" "R3" (at 57.15 121.92 0)
+    (property "Reference" "R10" (at 57.15 121.92 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10kΩ" (at 55.88 124.46 0)
@@ -5275,7 +5275,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R3") (unit 1)
+          (reference "R10") (unit 1)
         )
       )
     )
@@ -5284,7 +5284,7 @@
   (symbol (lib_id "Device:C_Polarized_Small_US") (at 63.5 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a4024a1b-a22d-4719-9da5-414cdf5ecb8f)
-    (property "Reference" "C8" (at 66.04 28.1432 0)
+    (property "Reference" "C1" (at 66.04 28.1432 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1000μF" (at 66.04 30.6832 0)
@@ -5301,7 +5301,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C8") (unit 1)
+          (reference "C1") (unit 1)
         )
       )
     )
@@ -5310,7 +5310,7 @@
   (symbol (lib_id "power:GND") (at 88.9 177.8 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a57f064f-23c1-4a6f-bde5-a1985587e8fc)
-    (property "Reference" "#PWR016" (at 88.9 184.15 0)
+    (property "Reference" "#PWR048" (at 88.9 184.15 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 88.9 182.88 0)
@@ -5326,7 +5326,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR016") (unit 1)
+          (reference "#PWR048") (unit 1)
         )
       )
     )
@@ -5335,7 +5335,7 @@
   (symbol (lib_id "Connector_Generic:Conn_01x03") (at 29.21 97.79 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid a67acb24-5435-4ace-8fce-93de39da66dd)
-    (property "Reference" "J13" (at 29.21 90.17 0)
+    (property "Reference" "J3" (at 29.21 90.17 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "To_XLR3" (at 29.21 92.71 0)
@@ -5353,7 +5353,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "J13") (unit 1)
+          (reference "J3") (unit 1)
         )
       )
     )
@@ -5388,7 +5388,7 @@
   (symbol (lib_id "power:GND") (at 215.9 96.52 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a825b413-b631-4101-b9be-409fb07e8023)
-    (property "Reference" "#PWR042" (at 215.9 102.87 0)
+    (property "Reference" "#PWR033" (at 215.9 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 215.9 101.6 0)
@@ -5404,7 +5404,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR042") (unit 1)
+          (reference "#PWR033") (unit 1)
         )
       )
     )
@@ -5413,7 +5413,7 @@
   (symbol (lib_id "power:GND") (at 259.08 40.64 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid a87b2d5c-c1db-4a55-8ac6-6df3cb4d60ff)
-    (property "Reference" "#PWR049" (at 259.08 46.99 0)
+    (property "Reference" "#PWR010" (at 259.08 46.99 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 261.62 40.64 0)
@@ -5429,7 +5429,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR049") (unit 1)
+          (reference "#PWR010") (unit 1)
         )
       )
     )
@@ -5438,7 +5438,7 @@
   (symbol (lib_id "Device:C_Small") (at 36.83 181.61 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid acbc8050-0f4c-4444-b36e-4af0f9038620)
-    (property "Reference" "C2" (at 39.37 180.9813 0)
+    (property "Reference" "C10" (at 39.37 180.9813 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "1μF" (at 39.37 183.5213 0)
@@ -5455,7 +5455,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C2") (unit 1)
+          (reference "C10") (unit 1)
         )
       )
     )
@@ -5491,7 +5491,7 @@
   (symbol (lib_id "Device:R_US") (at 111.76 137.16 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid aedf325f-29bb-494f-9d92-70819628ef1f)
-    (property "Reference" "R16" (at 107.95 135.89 90)
+    (property "Reference" "R15" (at 107.95 135.89 90)
       (effects (font (size 0.635 0.635)))
     )
     (property "Value" "220Ω" (at 114.3 135.89 90)
@@ -5508,7 +5508,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R16") (unit 1)
+          (reference "R15") (unit 1)
         )
       )
     )
@@ -5517,7 +5517,7 @@
   (symbol (lib_id "power:PWR_FLAG") (at 259.08 34.29 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b1e2549d-21c0-4427-8987-3185e58d3626)
-    (property "Reference" "#FLG04" (at 260.985 34.29 0)
+    (property "Reference" "#FLG03" (at 260.985 34.29 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "PWR_FLAG" (at 261.62 33.02 90)
@@ -5533,7 +5533,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#FLG04") (unit 1)
+          (reference "#FLG03") (unit 1)
         )
       )
     )
@@ -5542,7 +5542,7 @@
   (symbol (lib_id "Device:C_Small") (at 161.29 29.21 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b40b57a8-8197-46d0-a30c-e46e9abf78e9)
-    (property "Reference" "C6" (at 163.83 27.94 0)
+    (property "Reference" "C5" (at 163.83 27.94 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (at 163.83 30.48 0)
@@ -5559,7 +5559,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C6") (unit 1)
+          (reference "C5") (unit 1)
         )
       )
     )
@@ -5596,7 +5596,7 @@
   (symbol (lib_id "power:+3.3V") (at 167.64 54.61 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid b4c722d5-b353-46e2-8f09-40cd4cbdb606)
-    (property "Reference" "#PWR029" (at 167.64 58.42 0)
+    (property "Reference" "#PWR014" (at 167.64 58.42 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 167.64 50.8 0)
@@ -5612,7 +5612,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR029") (unit 1)
+          (reference "#PWR014") (unit 1)
         )
       )
     )
@@ -5621,7 +5621,7 @@
   (symbol (lib_id "Device:R_US") (at 130.81 73.66 270) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid b956a72b-0ebd-4583-b94f-9226dc2f342e)
-    (property "Reference" "R10" (at 130.81 68.58 90)
+    (property "Reference" "R3" (at 130.81 68.58 90)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "470Ω" (at 130.81 71.12 90)
@@ -5638,7 +5638,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R10") (unit 1)
+          (reference "R3") (unit 1)
         )
       )
     )
@@ -5673,7 +5673,7 @@
   (symbol (lib_id "Device:R_US") (at 67.31 142.24 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid baafb373-c413-4dd7-a975-01b2887feba2)
-    (property "Reference" "R6" (at 62.23 139.7 0)
+    (property "Reference" "R17" (at 62.23 139.7 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10kΩ" (at 60.96 142.24 0)
@@ -5690,7 +5690,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R6") (unit 1)
+          (reference "R17") (unit 1)
         )
       )
     )
@@ -5699,7 +5699,7 @@
   (symbol (lib_id "Interface_UART:SN65HVD11HD") (at 110.49 78.74 0) (mirror y) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bb4f07e6-be36-41ae-83ae-bb78a4f3532e)
-    (property "Reference" "U2" (at 111.0106 64.8802 0)
+    (property "Reference" "U3" (at 111.0106 64.8802 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "SN65HVD11HD" (at 111.0106 67.4171 0)
@@ -5722,7 +5722,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "U2") (unit 1)
+          (reference "U3") (unit 1)
         )
       )
     )
@@ -5731,7 +5731,7 @@
   (symbol (lib_id "power:GND") (at 71.12 172.72 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid bdd4179b-7606-496b-9b04-49ec76c4af8f)
-    (property "Reference" "#PWR010" (at 71.12 179.07 0)
+    (property "Reference" "#PWR045" (at 71.12 179.07 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 71.12 177.8 0)
@@ -5747,7 +5747,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR010") (unit 1)
+          (reference "#PWR045") (unit 1)
         )
       )
     )
@@ -5756,7 +5756,7 @@
   (symbol (lib_id "power:GND") (at 147.32 91.44 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid bf067c03-b655-4125-b279-c946da5ceeab)
-    (property "Reference" "#PWR023" (at 147.32 97.79 0)
+    (property "Reference" "#PWR029" (at 147.32 97.79 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 147.32 96.52 0)
@@ -5772,7 +5772,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR023") (unit 1)
+          (reference "#PWR029") (unit 1)
         )
       )
     )
@@ -5781,7 +5781,7 @@
   (symbol (lib_id "power:GND") (at 259.08 53.34 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid c1b99a56-4399-4be7-a8a0-6a8cacba6c99)
-    (property "Reference" "#PWR050" (at 259.08 59.69 0)
+    (property "Reference" "#PWR013" (at 259.08 59.69 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 261.62 53.34 0)
@@ -5797,7 +5797,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR050") (unit 1)
+          (reference "#PWR013") (unit 1)
         )
       )
     )
@@ -5806,7 +5806,7 @@
   (symbol (lib_id "Connector_Generic:Conn_01x03") (at 29.21 58.42 180) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c1d22d76-4803-4740-bb1c-2135a990f9ac)
-    (property "Reference" "J16" (at 29.21 50.8 0)
+    (property "Reference" "J2" (at 29.21 50.8 0)
       (effects (font (size 1.27 1.27)))
     )
     (property "Value" "To_XLR3" (at 29.21 53.34 0)
@@ -5824,7 +5824,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "J16") (unit 1)
+          (reference "J2") (unit 1)
         )
       )
     )
@@ -5833,7 +5833,7 @@
   (symbol (lib_id "power:GNDA") (at 110.49 95.25 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid c8931cf5-2016-4d7c-a0ea-e4923573d1d0)
-    (property "Reference" "#PWR018" (at 110.49 101.6 0)
+    (property "Reference" "#PWR032" (at 110.49 101.6 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 110.49 100.33 0)
@@ -5849,7 +5849,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR018") (unit 1)
+          (reference "#PWR032") (unit 1)
         )
       )
     )
@@ -5884,7 +5884,7 @@
   (symbol (lib_id "power:GND") (at 161.29 77.47 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d0097f7a-95a0-4b69-91d9-9129578aeae1)
-    (property "Reference" "#PWR028" (at 161.29 83.82 0)
+    (property "Reference" "#PWR021" (at 161.29 83.82 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 161.29 82.55 0)
@@ -5900,7 +5900,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR028") (unit 1)
+          (reference "#PWR021") (unit 1)
         )
       )
     )
@@ -5909,7 +5909,7 @@
   (symbol (lib_id "power:+5V") (at 259.08 21.59 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid d2753cbd-5adb-46ce-8777-d38fcdd63c75)
-    (property "Reference" "#PWR048" (at 259.08 25.4 0)
+    (property "Reference" "#PWR01" (at 259.08 25.4 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 259.08 17.78 0)
@@ -5925,7 +5925,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR048") (unit 1)
+          (reference "#PWR01") (unit 1)
         )
       )
     )
@@ -5959,7 +5959,7 @@
   (symbol (lib_id "power:GND") (at 67.31 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d81f4cbd-b3cc-4729-876e-df49734d867c)
-    (property "Reference" "#PWR066" (at 67.31 153.67 0)
+    (property "Reference" "#PWR042" (at 67.31 153.67 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 67.31 152.4 0)
@@ -5975,7 +5975,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR066") (unit 1)
+          (reference "#PWR042") (unit 1)
         )
       )
     )
@@ -5984,7 +5984,7 @@
   (symbol (lib_id "Device:R_US") (at 111.76 132.08 90) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d8a778c8-d903-467a-ae6e-d83ad2a124c5)
-    (property "Reference" "R14" (at 107.95 130.81 90)
+    (property "Reference" "R13" (at 107.95 130.81 90)
       (effects (font (size 0.635 0.635)))
     )
     (property "Value" "220Ω" (at 114.3 130.81 90)
@@ -6001,7 +6001,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R14") (unit 1)
+          (reference "R13") (unit 1)
         )
       )
     )
@@ -6010,7 +6010,7 @@
   (symbol (lib_id "power:GND") (at 259.08 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid d8c2fd3d-d817-48c9-9cd2-7738d03a7f63)
-    (property "Reference" "#PWR052" (at 259.08 85.09 0)
+    (property "Reference" "#PWR023" (at 259.08 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 261.62 78.74 0)
@@ -6026,7 +6026,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR052") (unit 1)
+          (reference "#PWR023") (unit 1)
         )
       )
     )
@@ -6035,7 +6035,7 @@
   (symbol (lib_id "power:GND") (at 213.36 78.74 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid dd0d3b2b-0bbf-4a74-bc25-aa45af822ba0)
-    (property "Reference" "#PWR041" (at 213.36 85.09 0)
+    (property "Reference" "#PWR022" (at 213.36 85.09 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 210.82 78.74 0)
@@ -6051,7 +6051,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR041") (unit 1)
+          (reference "#PWR022") (unit 1)
         )
       )
     )
@@ -6060,7 +6060,7 @@
   (symbol (lib_id "power:+3.3V") (at 143.51 147.32 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ddf7190f-c142-41b0-bfa3-a8176b4cb624)
-    (property "Reference" "#PWR024" (at 143.51 151.13 0)
+    (property "Reference" "#PWR043" (at 143.51 151.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 143.51 143.51 0)
@@ -6076,7 +6076,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR024") (unit 1)
+          (reference "#PWR043") (unit 1)
         )
       )
     )
@@ -6085,7 +6085,7 @@
   (symbol (lib_id "power:+5V") (at 30.48 24.13 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e04980a3-1eba-4a38-855f-03fc0381e0f0)
-    (property "Reference" "#PWR03" (at 30.48 27.94 0)
+    (property "Reference" "#PWR04" (at 30.48 27.94 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+5V" (at 30.48 20.32 0)
@@ -6101,7 +6101,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR03") (unit 1)
+          (reference "#PWR04") (unit 1)
         )
       )
     )
@@ -6110,7 +6110,7 @@
   (symbol (lib_id "Device:R_US") (at 26.67 123.19 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid e2462809-4bd3-41d5-b33b-47a466ccebd2)
-    (property "Reference" "R1" (at 21.59 120.65 0)
+    (property "Reference" "R8" (at 21.59 120.65 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10kΩ" (at 20.32 123.19 0)
@@ -6127,7 +6127,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R1") (unit 1)
+          (reference "R8") (unit 1)
         )
       )
     )
@@ -6162,7 +6162,7 @@
   (symbol (lib_id "power:GND") (at 259.08 97.79 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid e817bae2-5962-4754-82b1-ace5ce377e60)
-    (property "Reference" "#PWR061" (at 259.08 104.14 0)
+    (property "Reference" "#PWR034" (at 259.08 104.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 259.08 102.87 0)
@@ -6178,7 +6178,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR061") (unit 1)
+          (reference "#PWR034") (unit 1)
         )
       )
     )
@@ -6187,7 +6187,7 @@
   (symbol (lib_id "power:GND") (at 271.78 97.79 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ee4301c8-cfc6-40d5-a1d5-b817c0a82b0b)
-    (property "Reference" "#PWR063" (at 271.78 104.14 0)
+    (property "Reference" "#PWR035" (at 271.78 104.14 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 271.78 102.87 0)
@@ -6203,7 +6203,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR063") (unit 1)
+          (reference "#PWR035") (unit 1)
         )
       )
     )
@@ -6238,7 +6238,7 @@
   (symbol (lib_id "Device:R_US") (at 87.63 68.58 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid ef908a01-4ecc-496c-9a6d-3957fe5742f1)
-    (property "Reference" "R8" (at 89.281 67.7453 0)
+    (property "Reference" "R2" (at 89.281 67.7453 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "680Ω" (at 89.281 70.2822 0)
@@ -6255,7 +6255,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "R8") (unit 1)
+          (reference "R2") (unit 1)
         )
       )
     )
@@ -6264,7 +6264,7 @@
   (symbol (lib_id "power:+3.3V") (at 17.78 118.11 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f1182a93-ecd3-46c1-9301-4685ee1aaa97)
-    (property "Reference" "#PWR02" (at 17.78 121.92 0)
+    (property "Reference" "#PWR037" (at 17.78 121.92 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "+3.3V" (at 17.78 114.3 0)
@@ -6280,7 +6280,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR02") (unit 1)
+          (reference "#PWR037") (unit 1)
         )
       )
     )
@@ -6289,7 +6289,7 @@
   (symbol (lib_id "power:GNDA") (at 36.83 101.6 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f3de1ac4-095b-4363-bec0-bfdfd7674ff3)
-    (property "Reference" "#PWR064" (at 36.83 107.95 0)
+    (property "Reference" "#PWR036" (at 36.83 107.95 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GNDA" (at 33.02 104.14 0)
@@ -6305,7 +6305,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR064") (unit 1)
+          (reference "#PWR036") (unit 1)
         )
       )
     )
@@ -6314,7 +6314,7 @@
   (symbol (lib_id "Device:C_Small") (at 259.08 93.98 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f598c795-7d52-40cd-8656-9ef951af946c)
-    (property "Reference" "C9" (at 261.62 93.3513 0)
+    (property "Reference" "C7" (at 261.62 93.3513 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "100nF" (at 261.62 95.8913 0)
@@ -6331,7 +6331,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "C9") (unit 1)
+          (reference "C7") (unit 1)
         )
       )
     )
@@ -6340,7 +6340,7 @@
   (symbol (lib_id "Connector_Generic:Conn_01x05") (at 153.67 154.94 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no)
     (uuid f64e14f6-fa27-4933-ab4c-ac8ba81d9a70)
-    (property "Reference" "J4" (at 156.21 154.305 0)
+    (property "Reference" "J5" (at 156.21 154.305 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "Rotary encoder" (at 156.21 156.845 0)
@@ -6360,7 +6360,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "J4") (unit 1)
+          (reference "J5") (unit 1)
         )
       )
     )
@@ -6369,7 +6369,7 @@
   (symbol (lib_id "power:GND") (at 24.13 185.42 0) (unit 1)
     (in_bom yes) (on_board yes) (dnp no) (fields_autoplaced)
     (uuid f7539d56-da3a-45b0-9e6e-9f3b2edb1cee)
-    (property "Reference" "#PWR06" (at 24.13 191.77 0)
+    (property "Reference" "#PWR049" (at 24.13 191.77 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Value" "GND" (at 24.13 190.5 0)
@@ -6385,7 +6385,7 @@
     (instances
       (project "DMX_servo_controller_hardware"
         (path "/cd90393c-7fb4-4867-84b8-7df1a2bf6613"
-          (reference "#PWR06") (unit 1)
+          (reference "#PWR049") (unit 1)
         )
       )
     )
