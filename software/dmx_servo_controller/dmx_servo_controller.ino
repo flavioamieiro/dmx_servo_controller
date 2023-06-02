@@ -67,8 +67,8 @@ void setup()
     Serial.println("STARTING DMX INPUT");
 #endif
 
-    // Setup our DMX Input to read on GPIO 0, from channel 1 to NUM_CHANNELS+1
     dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
+    dmxInput.read_async(buffer);
     display.begin(0x3C, true);
     pwm.begin();
     pwm.setPWMFreq(50);
@@ -79,8 +79,6 @@ void setup()
 
 void loop()
 {
-    // Wait for next DMX packet
-    dmxInput.read(buffer);
     handle_dmx_message();
     handle_rotary_encoder();
     update_display();
