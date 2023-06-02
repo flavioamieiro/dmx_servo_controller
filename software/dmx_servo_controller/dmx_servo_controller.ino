@@ -9,7 +9,6 @@
 
 #define START_CHANNEL 1
 #define NUM_CHANNELS 8
-#define MIN_MOVE_INTERVAL_MS 3
 
 #define PWM_ADDR 0x40
 #define DISPLAY_WIDTH 128
@@ -100,9 +99,7 @@ void handle_dmx_message() {
     for (uint i = 1; i < NUM_CHANNELS+1; i++)
     {
         struct Servo *current_servo = &servos[i-1];
-        if ((millis() - current_servo->last_update) >= MIN_MOVE_INTERVAL_MS) {
-          update_servo(current_servo, buffer[i]);
-        };
+        update_servo(current_servo, buffer[i]);
     }
 }
 
