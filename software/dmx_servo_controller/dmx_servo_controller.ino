@@ -15,6 +15,7 @@
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 64
 
+#define DMX_INPUT_PIN 15
 #define PIN_ENCODER_A 16
 #define PIN_ENCODER_B 17
 #define PIN_ENCODER_PUSH 18
@@ -67,7 +68,7 @@ void setup()
 #endif
 
     // Setup our DMX Input to read on GPIO 0, from channel 1 to NUM_CHANNELS+1
-    dmxInput.begin(0, START_CHANNEL, NUM_CHANNELS);
+    dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
     display.begin(0x3C, true);
     pwm.begin();
     pwm.setPWMFreq(50);
