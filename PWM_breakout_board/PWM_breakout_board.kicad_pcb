@@ -140,8 +140,8 @@
       (net 5 "SIG3") (pinfunction "Pin_2") (pintype "passive") (tstamp 06d8b841-8ee8-40d3-80da-0dd99ab7c41b))
     (pad "3" thru_hole circle (at 10.16 0) (size 3 3) (drill 1.52) (layers "*.Cu" "*.Mask")
       (net 2 "GND") (pinfunction "Pin_3") (pintype "passive") (tstamp f6eb8cc3-9e0a-48bd-ae80-5f8258d87774))
-    (model "${KICAD6_3DMODEL_DIR}/TerminalBlock.3dshapes/TerminalBlock_bornier-3_P5.08mm.wrl"
-      (offset (xyz 5.079999924 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/TerminalBlock_Phoenix.3dshapes/TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal.step"
+      (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
@@ -204,8 +204,8 @@
       (net 4 "SIG2") (pinfunction "Pin_2") (pintype "passive") (tstamp 9476fac9-8846-4431-be7e-1ca540fa5167))
     (pad "3" thru_hole circle (at 10.16 0) (size 3 3) (drill 1.52) (layers "*.Cu" "*.Mask")
       (net 2 "GND") (pinfunction "Pin_3") (pintype "passive") (tstamp a0feaa01-6482-4a43-84a6-1d9e27ee9550))
-    (model "${KICAD6_3DMODEL_DIR}/TerminalBlock.3dshapes/TerminalBlock_bornier-3_P5.08mm.wrl"
-      (offset (xyz 5.079999924 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/TerminalBlock_Phoenix.3dshapes/TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal.step"
+      (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
@@ -328,8 +328,8 @@
       (net 6 "SIG4") (pinfunction "Pin_2") (pintype "passive") (tstamp bfc5b163-1ea2-4b5d-a28a-177fae43b997))
     (pad "3" thru_hole circle (at 10.16 0) (size 3 3) (drill 1.52) (layers "*.Cu" "*.Mask")
       (net 2 "GND") (pinfunction "Pin_3") (pintype "passive") (tstamp 77807aaf-34b5-485c-ac15-f2a09d6e588e))
-    (model "${KICAD6_3DMODEL_DIR}/TerminalBlock.3dshapes/TerminalBlock_bornier-3_P5.08mm.wrl"
-      (offset (xyz 5.079999924 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/TerminalBlock_Phoenix.3dshapes/TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal.step"
+      (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
@@ -392,8 +392,8 @@
       (net 3 "SIG1") (pinfunction "Pin_2") (pintype "passive") (tstamp 29111749-81b3-4885-89f3-dc561c595803))
     (pad "3" thru_hole circle (at 10.16 0) (size 3 3) (drill 1.52) (layers "*.Cu" "*.Mask")
       (net 2 "GND") (pinfunction "Pin_3") (pintype "passive") (tstamp 4aef1142-cfa5-449a-b0e3-7490127e640f))
-    (model "${KICAD6_3DMODEL_DIR}/TerminalBlock.3dshapes/TerminalBlock_bornier-3_P5.08mm.wrl"
-      (offset (xyz 5.079999924 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/TerminalBlock_Phoenix.3dshapes/TerminalBlock_Phoenix_MKDS-1,5-3-5.08_1x03_P5.08mm_Horizontal.step"
+      (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
@@ -563,8 +563,8 @@
       (net 1 "VCC") (pinfunction "Pin_1") (pintype "passive") (tstamp 1fe4ea7b-6a72-41b7-aafa-865abfaca667))
     (pad "2" thru_hole circle (at 5.08 0) (size 3 3) (drill 1.52) (layers "*.Cu" "*.Mask")
       (net 2 "GND") (pinfunction "Pin_2") (pintype "passive") (tstamp e193d69d-a34d-4e1a-8f45-7df2ecee52f4))
-    (model "${KICAD6_3DMODEL_DIR}/TerminalBlock.3dshapes/TerminalBlock_bornier-2_P5.08mm.wrl"
-      (offset (xyz 2.539999962 0 0))
+    (model "${KICAD7_3DMODEL_DIR}/TerminalBlock_Phoenix.3dshapes/TerminalBlock_Phoenix_MKDS-1,5-2-5.08_1x02_P5.08mm_Horizontal.step"
+      (offset (xyz 0 0 0))
       (scale (xyz 1 1 1))
       (rotate (xyz 0 0 0))
     )
