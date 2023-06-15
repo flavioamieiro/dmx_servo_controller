@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h> // https://github.com/adafruit/Adafruit-GFX-Library
-#include <Adafruit_SH110X.h> // https://github.com/adafruit/Adafruit_SH110x
+#include <Adafruit_SSD1306.h> // https://github.com/adafruit/Adafruit_SSD1306
 #include <Adafruit_PWMServoDriver.h> // https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
 #include <DmxInput.h> // https://github.com/jostlowe/Pico-DMX
 #include <RotaryEncoder.h> // https://github.com/mathertel/RotaryEncoder
@@ -12,7 +12,8 @@
 
 #define PWM_ADDR 0x40
 #define DISPLAY_WIDTH 128
-#define DISPLAY_HEIGHT 64
+#define DISPLAY_HEIGHT 32
+#define OLED_RESET     -1
 
 #define DMX_INPUT_PIN 15
 #define PIN_ENCODER_A 16
@@ -31,7 +32,7 @@
 DmxInput dmxInput;
 volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(START_CHANNEL, NUM_CHANNELS)];
 
-Adafruit_SH1106G display = Adafruit_SH1106G(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire);
+Adafruit_SSD1306 display = Adafruit_SSD1306(DISPLAY_WIDTH, DISPLAY_HEIGHT, &Wire, OLED_RESET);
 
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 
@@ -68,7 +69,7 @@ void setup()
 
     dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
     dmxInput.read_async(buffer);
-    display.begin(0x3C, true);
+    display.begin(SSD1306_SWITCHCAPVCC, 0x3C, true);
     pwm.begin();
     pwm.setPWMFreq(50);
 
@@ -127,7 +128,7 @@ void show_channel_value(int n, int value) {
 void show_splash_screen() {
     display.clearDisplay();
     display.setTextSize(1);
-    display.setTextColor(SH110X_WHITE);
+    display.setTextColor(SSD1306_WHITE);
     display.setCursor(6,0);
     display.println("DMX servo controller");
     display.println();
