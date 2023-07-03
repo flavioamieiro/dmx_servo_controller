@@ -15,10 +15,10 @@
 #define DISPLAY_HEIGHT 32
 #define OLED_RESET     -1
 
-#define DMX_INPUT_PIN 15
-#define PIN_ENCODER_A 16
-#define PIN_ENCODER_B 17
-#define PIN_ENCODER_PUSH 18
+#define DMX_INPUT_PIN 18
+#define PIN_ENCODER_PUSH 7
+#define PIN_ENCODER_A 9
+#define PIN_ENCODER_B 8
 
 // Minimum and maximum pwm values to set as -90/90 degrees.
 // We found by testing in the servos we had that the following
