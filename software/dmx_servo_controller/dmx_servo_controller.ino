@@ -74,7 +74,6 @@ void setup()
     pwm.setPWMFreq(50);
 
     initialize_servos();
-    show_splash_screen();
 }
 
 void loop()
@@ -123,20 +122,6 @@ void show_channel_value(int n, int value) {
         display.print(n);
         display.print(": ");
         display.println(value);
-}
-
-void show_splash_screen() {
-    display.clearDisplay();
-    display.setTextSize(1);
-    display.setTextColor(SSD1306_WHITE);
-    display.setCursor(6,0);
-    display.println("DMX servo controller");
-    display.println();
-    display.println();
-    display.println();
-    display.println();
-    display.println("Waiting for input...");
-    display.display();
 }
 
 
