@@ -2,6 +2,7 @@ fp-info-cache
 fp-lib-table
 .svg2shenzhen-cache
 *.zip
+!output/*.zip
 *.kicad_prl
 *-bak
 __pycache__
