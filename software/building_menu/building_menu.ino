@@ -174,11 +174,9 @@ void idleMenu() {
   oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
 } 
 
-//--------------------------------------------------------------------------------------------------
-
+//--------------------------------------------------------------------------------------------------           // BUILD SERVO LIMITS INTERACTION
 // Actions for menu selections are put in here
-//    note: it would probably be better to put these in their own seperate procedures but I have kept
-//          them all in this one place to make it easier to follow
+
 void menuActions() {
   //podia ser uma declaracao tipo "CASE"
   if (oledMenu.menuTitle == "MENU") {    // actions when an item is selected in menu
@@ -221,18 +219,15 @@ void menuActions() {
     }
     oledMenu.selectedMenuItem = 0;                // clear menu item selected flag as it has been actioned
   }
-
+  
   // actions when an item is selected in the demo_list menu
   if (oledMenu.menuTitle == "Servo Limits") {
-
-    // Back to main menu
     if (oledMenu.selectedMenuItem == 9) {
       #ifdef DEBUG
         Serial.println("Servo Limits: Back to main menu");
       #endif
       mainMenu();
     }
-
     oledMenu.selectedMenuItem = 0;                // clear menu item selected flag as it has been actioned
   }
 
@@ -241,9 +236,8 @@ void menuActions() {
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS 
 
-// demonstration of how to enter a value
 void addr_changer() {
   resetMenu();                           // clear any previous menu
   menuMode = value;                      // enable value entry
@@ -468,7 +462,7 @@ void serviceMenu() {
     display.display();
 }
 
-// ---------------------------------------------------------------------------------             //ADICIONAR ACELERAÇÃO NO CONTROLE DO DMX ADDR 
+// ---------------------------------------------------------------------------------       //ADICIONAR ACELERAÇÃO NO CONTROLE DO DMX ADDR 
 //                        -service value entry
 // if _blocking set to 1 then all other tasks are stopped until a value is entered
 // ---------------------------------------------------------------------------------
@@ -593,8 +587,9 @@ void createList(String _title, int _noOfElements, String *_list) {
 
 // ----------------------------------------------------------------
 //                         -idle display
-// ----------------------------------------------------------------
+// ----------------------------------------------------------------             // ADD blinking screen when no dmx signal (no_dmx_flag == true)
 void idleDisplay(){
+ 
   menuMode = idle;
 
   display.clearDisplay();
@@ -719,6 +714,7 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     #endif
 }
 
+
 // -------------------------------------------------------------------------
 //                     -interrupt for rotary encoder
 // rotary encoder interrupt routine to update position counter when turned
@@ -752,5 +748,6 @@ void doEncoder() {
     rotaryEncoder.encoderPrevA = pinA;
     rotaryEncoder.encoderPrevB = pinB;
 }
+
 
 // ---------------------------------------------- end ----------------------------------------------
