@@ -9,7 +9,7 @@
 
 
 
-
+//---------------OLED INIT---------------
 #define PWM_ADDR 0x3C
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 32
@@ -17,7 +17,7 @@
 
 
 
-
+//---------------SERVO INIT---------------
 // Minimum and maximum pwm values to set as -90/90 degrees.
 // We found by testing in the servos we had that the following
 // min/max values result in a 180 rotation range.
@@ -25,20 +25,20 @@
 #define DEFAULT_SERVO_MAX 512
 #define DEFAULT_SERVO_DMX_VALUE 127
 
-/*VERBOSE*/
+
+//---------------VERBOSE---------------
 #define DEBUG
 #define PRINT_DMX_MESSAGES
 
 
-/*DMX INIT*/
+//---------------DMX INIT---------------
 DmxInput dmxInput;
-#define NUM_CHANNELS 4
-#define DMX_INPUT_PIN 18
+#define NUM_CHANNELS    4
+#define START_CHANNEL   1
+#define DMX_INPUT_PIN   18
 byte ledState = LOW;
 
-volatile uint8_t START_CHANNEL = 3;
 volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(START_CHANNEL, NUM_CHANNELS)];
-
 
 struct Servo {
   int dmx_channel;
@@ -48,8 +48,8 @@ struct Servo {
   int max_pos;
   int last_update;
 };
-
 struct Servo servos[NUM_CHANNELS];
+
 
 void setup()
 {
@@ -68,8 +68,6 @@ void setup()
     dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
     initialize_dmx_buffer();
     dmxInput.read_async(buffer);
-
-  
 }
 
 void loop()
@@ -77,8 +75,6 @@ void loop()
     handle_dmx_message();
     delay(50);
 }
-
-
 
 void handle_dmx_message() {
     if(millis() > 100+dmxInput.latest_packet_timestamp()) {
@@ -106,25 +102,6 @@ void initialize_dmx_buffer(){
     buffer[i] = 0;
 }
 
-void start_addr_changer(uint newChan){
-    dmxInput.end();
-    START_CHANNEL = newChan;
-    initialize_dmx_buffer();
-    dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
-    
-}
-
-void initialize_servos() {
-    for (int i = 0; i < NUM_CHANNELS; i++) {
-      servos[i].dmx_channel = i+1;
-      servos[i].pwm_channel = i;
-      servos[i].dmx_value =   DEFAULT_SERVO_DMX_VALUE;
-      servos[i].min_pos =     DEFAULT_SERVO_MIN;
-      servos[i].max_pos =     DEFAULT_SERVO_MAX;
-      servos[i].last_update = 0;
-    }
-}
-
 
 void update_servo(struct Servo *servo, int new_dmx_value) {
     servo->dmx_value = new_dmx_value;
@@ -146,3 +123,24 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
 #endif
 #endif
 }
+
+/*
+void start_addr_changer(uint newChan){
+  //This code does not work because of the library is broken - see ISSUE #1 for clarification
+    dmxInput.end();
+    START_CHANNEL = newChan;
+    initialize_dmx_buffer();
+    dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);  
+}*/
+
+/*
+void initialize_servos() {
+    for (int i = 0; i < NUM_CHANNELS; i++) {
+      servos[i].dmx_channel = i+1;
+      servos[i].pwm_channel = i;
+      servos[i].dmx_value =   DEFAULT_SERVO_DMX_VALUE;
+      servos[i].min_pos =     DEFAULT_SERVO_MIN;
+      servos[i].max_pos =     DEFAULT_SERVO_MAX;
+      servos[i].last_update = 0;
+    }
+}*/
