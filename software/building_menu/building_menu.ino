@@ -64,6 +64,8 @@
   const int   displayMaxLines =     3;       // max lines that can be displayed in lower section of display in textsize1 (5 on larger oLeds)
   const int   MaxmenuTitleLength =  10;      // max characters per line when using text size 2 (usually 10)
   bool        no_dmx_flag =         false;   // Flag for the screen timeout function
+  uint32_t    lcd_blink_timestamp = 0;
+  bool        toggle_title =        true;
 
   volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(START_CHANNEL, NUM_CHANNELS)];
 
@@ -155,14 +157,15 @@ void defaultMenu() {
 void mainMenu() {
   resetMenu();                            // clear any previous menu
   menuMode = menu;                        // enable menu mode
-  oledMenu.noOfmenuItems = 5;             // set the number of items in this menu
+  oledMenu.noOfmenuItems = 6;             // set the number of items in this menu
   oledMenu.menuTitle = "MENU";            // menus title (used to identify it)
 
   oledMenu.menuItems[1] = "DMX Address";
   oledMenu.menuItems[2] = "Servo Limits";
   oledMenu.menuItems[3] = "Version";
-  oledMenu.menuItems[4] = "Display Off";
-  oledMenu.menuItems[5] = "Back";
+  oledMenu.menuItems[4] = "Reset All";
+  oledMenu.menuItems[5] = "Display Off";
+  oledMenu.menuItems[6] = "Back";
 } 
 
 //--------------------------------------------------------------------------------------------------
@@ -203,17 +206,24 @@ void menuActions() {
       #endif
       displayMessage("Version "+ SOFTWARE_VERSION, "SERVO DMX CONTROLLER\nDELED + AMIEIRO");    // 21 chars per line, "\n" = next line
     }
-    // turn menu/oLED off            --  SCREEN OFF
+    // RESET ALL
     else if (oledMenu.selectedMenuItem == 4) {
+      #ifdef DEBUG
+        Serial.println("menu: RESET ALL");
+      #endif
+      //-------------------------------------------------------RESET ALL FUNC
+    }
+    // turn menu/oLED off            --  SCREEN OFF
+    else if (oledMenu.selectedMenuItem == 5) {
       #ifdef DEBUG
         Serial.println("menu: menu off");
       #endif
       resetMenu();    // turn menus off
     }
-    // back to idleMenu
-    else if (oledMenu.selectedMenuItem == 5) {
+    // Back to idleMenu
+    else if (oledMenu.selectedMenuItem == 6) {
       #ifdef DEBUG
-        Serial.println("menu: back");
+        Serial.println("menu: Back");
       #endif
       idleMenu();    // turn menus off
     }
@@ -513,7 +523,7 @@ int serviceValue(bool _blocking) {
     display.setCursor(_valueSpacingX, topLine + _valueSpacingY);
     display.setTextSize(3);
     if(oledMenu.mValueEntered < 100) display.print(0);
-    if(oledMenu.mValueEntered < 10) display.print(00);
+    if(oledMenu.mValueEntered < 10) display.print(00); //--------------------------------nao precisava de um ELSE aqui nao ? entretanto ta funcoinando assim
     display.println(oledMenu.mValueEntered);
 
     /*// range
@@ -585,12 +595,18 @@ void createList(String _title, int _noOfElements, String *_list) {
 
  }
 
+
 // ----------------------------------------------------------------
 //                         -idle display
 // ----------------------------------------------------------------             // ADD blinking screen when no dmx signal (no_dmx_flag == true)
 void idleDisplay(){
  
   menuMode = idle;
+
+  char channelBuffer[4];
+  sprintf(channelBuffer, "%03d", START_CHANNEL);
+  String originalTitle = oledMenu.menuTitle + " " + String(channelBuffer);
+  String t_title;
 
   display.clearDisplay();
   display.setTextColor(WHITE);
@@ -600,7 +616,21 @@ void idleDisplay(){
     if (oledMenu.menuTitle.length() > MaxmenuTitleLength) display.setTextSize(1);
     else display.setTextSize(1);
 
-    display.println(oledMenu.menuTitle);
+    if(no_dmx_flag){
+      if(millis() - lcd_blink_timestamp >= 350){ 
+        lcd_blink_timestamp = millis();
+        toggle_title = !toggle_title;  // Toggle the flag
+      }
+      if(toggle_title){
+          t_title = originalTitle;
+        } 
+        else {
+          t_title = "";
+        }
+    }
+    else t_title = originalTitle;
+
+    display.println(t_title);
     display.drawLine(0, topLine-1, display.width(), topLine-1, WHITE);       // draw horizontal line under title
 
 
@@ -656,7 +686,7 @@ void resetMenu() {
 //                     -Handle DMX received inputs
 // ----------------------------------------------------------------
 void handle_dmx_message() {
-    if(millis() > 150+dmxInput.latest_packet_timestamp()) {
+    if(millis() > 200+dmxInput.latest_packet_timestamp()) {
         #ifdef DEBUG
         #ifdef PRINT_DMX_MESSAGES
             Serial.println("no data!");
@@ -672,7 +702,7 @@ void handle_dmx_message() {
             update_servo(current_servo, buffer[i]);
         }
         if(millis() > 15+dmxInput.latest_packet_timestamp()){   // this line delays the led blinking to a human readable frequency
-            ledState = (ledState == HIGH) ? LOW: HIGH;
+            ledState = (ledState == HIGH) ? LOW: HIGH; //toggle
         }
         no_dmx_flag = false;
     }
