@@ -49,18 +49,18 @@ extern "C" {//                                                    https://www.ma
 // DMX512
   DmxInput dmxInput;
   #define   NUM_CHANNELS    4
-  uint16_t  START_CHANNEL   1       //------------------------------------------- we need to work on this one 
   #define   DMX_INPUT_PIN   18
+  uint16_t  START_CHANNEL = 1;       //------------------------------------------- we need to work on this one - 
   byte ledState = LOW;
 
 //Pi Pico - Flash memory
 // Set the target offest to the last sector of flash
-#define FLASH_TARGET_OFFSET (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)
+  #define FLASH_TARGET_OFFSET (PICO_FLASH_SIZE_BYTES - FLASH_SECTOR_SIZE)
 
 //---------------VERBOSE---------------
   #define DEBUG
   #define PRINT_DMX_MESSAGES
-  const String SOFTWARE_VERSION = "0.1";
+  const String SOFTWARE_VERSION = "0.2";
 
 // Misc
   #define     BUTTONPRESSEDSTATE    0        // rotary encoder gpio pin logic level when the button is pressed (usually 0)
@@ -81,7 +81,7 @@ extern "C" {//                                                    https://www.ma
   volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(1, NUM_CHANNELS)];  // CHANGE TO START_CHANNEL
 
 //Memory related variables 
-  int mem_buf[FLASH_PAGE_SIZE/sizeof(int)];  // One page buffer of ints
+  int mem_buf[FLASH_PAGE_SIZE/sizeof(uint16_t)];  // One page buffer of ints
   int *p, mem_addr;
   unsigned int page;                         // prevent comparison of unsigned and signed int
   int first_empty_page = -1;
