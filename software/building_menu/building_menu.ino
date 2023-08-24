@@ -19,24 +19,26 @@
 //                         S E T T I N G S
 // ----------------------------------------------------------------
 // Encoder
-  #define encoder0PinA  9                    // Rotary encoder gpio pin
-  #define encoder0PinB  8                    // Rotary encoder gpio pin
-  #define encoder0Press 7                    // Rotary encoder button gpio pin
+  #define encoder0PinA    9                    // Rotary encoder gpio pin
+  #define encoder0PinB    8                    // Rotary encoder gpio pin
+  #define encoder0Press   7                    // Rotary encoder button gpio pin
 
 // oLED
-  #define OLED_ADDR     0x3C                 // OLED i2c address
-  #define SCREEN_WIDTH  128                  // OLED display width, in pixels (usually 128)
-  #define SCREEN_HEIGHT 32                   // OLED display height, in pixels (64 for larger oLEDs)
-  #define OLED_RESET    -1                   // Reset pin gpio (or -1 if sharing Arduino reset pin)
+  #define OLED_ADDR       0x3C                 // OLED i2c address
+  #define SCREEN_WIDTH    128                  // OLED display width, in pixels (usually 128)
+  #define SCREEN_HEIGHT   32                   // OLED display height, in pixels (64 for larger oLEDs)
+  #define OLED_RESET      -1                   // Reset pin gpio (or -1 if sharing Arduino reset pin)
   #define SSD1306_NO_SPLASH
 
+// PWM driver
+  #define PWM_ADDR        0x40                 // PCA9685 i2c address
 
 // SERVO
 // Minimum and maximum pwm values to set as -90/90 degrees.
 // We found by testing in the servos we had that the following
 // min/max values result in a 180 rotation range.
-  #define DEFAULT_SERVO_MIN 64
-  #define DEFAULT_SERVO_MAX 512
+  #define DEFAULT_SERVO_MIN       64
+  #define DEFAULT_SERVO_MAX       512
   #define DEFAULT_SERVO_DMX_VALUE 127
 
 // DMX512
@@ -86,6 +88,13 @@
   void initialize_servos();
   void update_servo();
   void idleDisplay();
+  void menuValues();
+  void addr_changer();
+  void menuActions();
+  void idleMenu();
+  void mainMenu();
+  void defaultMenu();
+
 
   // modes that the menu system can be in
   enum menuModes {
@@ -137,12 +146,76 @@
 struct Servo servos[NUM_CHANNELS];
 
 // oled SSD1306 display connected to I2C
-  Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// PCA9685 I2C pwm module
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 
 
-// -------------------------------------------------------------------------------------------------
-//                                 The custom menus go below here
-// -------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------
+//                              -setup
+// ----------------------------------------------------------------
+void setup() {
+
+    #ifdef DEBUG
+      Serial.begin(115200); //while (!Serial); delay(50);       // start serial comms non-blocking
+      Serial.println("\nStarting menu\n");
+    #endif
+
+    pinMode(LED_BUILTIN, OUTPUT);     // onboard indicator led
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(50);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(50);
+    digitalWrite(LED_BUILTIN, HIGH);
+
+  // configure gpio pins for rotary encoder
+    pinMode(encoder0Press,  INPUT_PULLUP);
+    pinMode(encoder0PinA,   INPUT);
+    pinMode(encoder0PinB,   INPUT);
+
+  // initialise the oled display
+
+    Wire.begin();
+    if(!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR, true)) {
+      #ifdef DEBUG
+        Serial.println(("\nError initialising the oled display"));
+      #endif 
+    }
+    Wire.setClock(100000);
+
+  // Interrupt for reading the rotary encoder position
+    rotaryEncoder.encoder0Pos = 0;
+    attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoder, CHANGE);
+
+  //Starting the DMX interpreter
+    dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
+    dmxInput.read_async(buffer);
+
+    initialize_servos();    //------------------------------------------------NEED TO CHANGE THIS ONE TO FLASH STORED VALUES
+  
+  // Starting the PWM Driver
+    pwm.begin();
+    pwm.setPWMFreq(50);
+    
+
+  // display greeting message - pressing button will start menu
+    displayMessage("DELED", "DMX Servo "+SOFTWARE_VERSION+"\nController");
+    display.display();
+    delay(2000);
+    idleMenu();
+}
+
+
+// ----------------------------------------------------------------
+//                              -loop
+// ----------------------------------------------------------------
+void loop() {
+  handle_dmx_message();
+  reUpdateButton();      // update rotary encoder button status (if pressed activate default menu)
+  menuUpdate();          // update or action the oled menu
+} 
+
 
 // Start the default menu
 void defaultMenu() {
@@ -153,7 +226,7 @@ void defaultMenu() {
 
 
 // a demonstration of how to create a menu
-//    when an item is selected it is actioned in menuActions()
+// when an item is selected it is actioned in menuActions()
 void mainMenu() {
   resetMenu();                            // clear any previous menu
   menuMode = menu;                        // enable menu mode
@@ -166,15 +239,6 @@ void mainMenu() {
   oledMenu.menuItems[4] = "Reset All";
   oledMenu.menuItems[5] = "Display Off";
   oledMenu.menuItems[6] = "Back";
-} 
-
-//--------------------------------------------------------------------------------------------------
-
-//    when an item is selected it is actioned in menuActions()
-void idleMenu() {
-  resetMenu();                            // clear any previous menu
-  menuMode = idle;                        // enable menu mode
-  oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
 } 
 
 //--------------------------------------------------------------------------------------------------           // BUILD SERVO LIMITS INTERACTION
@@ -204,7 +268,7 @@ void menuActions() {
       #ifdef DEBUG
         Serial.println("menu: Version message");
       #endif
-      displayMessage("Version "+ SOFTWARE_VERSION, "SERVO DMX CONTROLLER\nDELED + AMIEIRO");    // 21 chars per line, "\n" = next line
+      displayMessage("Version v"+ SOFTWARE_VERSION, "SERVO DMX CONTROLLER\nDELED + AMIEIRO");    // 21 chars per line, "\n" = next line
     }
     // RESET ALL
     else if (oledMenu.selectedMenuItem == 4) {
@@ -246,6 +310,15 @@ void menuActions() {
   }
 }
 
+//--------------------------------------------------------------------------------------------------
+
+//    when an item is selected it is actioned in menuActions()
+void idleMenu() {
+  resetMenu();                            // clear any previous menu
+  menuMode = idle;                        // enable menu mode
+  oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
+} 
+
 //-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS 
 
 void addr_changer() {
@@ -272,73 +345,6 @@ void menuValues() {
     // alternatively use 'resetMenu()' here to turn menus off after value entered - or use 'defaultMenu()' to re-start the default menu
   }
 }
-
-// -------------------------------------------------------------------------------------------------
-//                                         custom menus go above here
-// -------------------------------------------------------------------------------------------------
-
-
-// ----------------------------------------------------------------
-//                              -setup
-// ----------------------------------------------------------------
-void setup() {
-
-    #ifdef DEBUG
-      Serial.begin(115200); //while (!Serial); delay(50);       // start serial comms non-blocking
-      Serial.println("\nStarting menu\n");
-    #endif
-
-    pinMode(LED_BUILTIN, OUTPUT);     // onboard indicator led
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(50);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(50);
-    digitalWrite(LED_BUILTIN, HIGH);
-
-  // configure gpio pins for rotary encoder
-    pinMode(encoder0Press,  INPUT_PULLUP);
-    pinMode(encoder0PinA,   INPUT);
-    pinMode(encoder0PinB,   INPUT);
-
-  // initialise the oled display
-
-    Wire.begin();
-    if(!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR, true)) {
-      #ifdef DEBUG
-        Serial.println(("\nError initialising the oled display"));
-      #endif 
-    }
-    Wire.setClock(100000);
-
-  // Interrupt for reading the rotary encoder position
-    rotaryEncoder.encoder0Pos = 0;
-    attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoder, CHANGE);
-
-    dmxInput.begin(DMX_INPUT_PIN, START_CHANNEL, NUM_CHANNELS);
-    dmxInput.read_async(buffer);
-    initialize_servos();
-
-    /*
-    pwm.begin();
-    pwm.setPWMFreq(50);
-    */
-
-  // display greeting message - pressing button will start menu
-    displayMessage("DELED", "DMX Servo "+SOFTWARE_VERSION+"\nController");
-    display.display();
-    delay(2000);
-    idleMenu();
-}
-
-
-// ----------------------------------------------------------------
-//                              -loop
-// ----------------------------------------------------------------
-void loop() {
-  handle_dmx_message();
-  reUpdateButton();      // update rotary encoder button status (if pressed activate default menu)
-  menuUpdate();          // update or action the oled menu
-} 
 
 // ----------------------------------------------------------------
 //                   -button debounce (rotary encoder)
@@ -728,7 +734,7 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     servo->dmx_value = new_dmx_value;
     servo->last_update = millis();
     int pos = map(servo->dmx_value, 0, 255, servo->min_pos, servo->max_pos);
-    //pwm.setPWM(servo->pwm_channel, 0, pos);
+    pwm.setPWM(servo->pwm_channel, 0, pos);
     #ifdef DEBUG
     #ifdef PRINT_DMX_MESSAGES
         Serial.print("dmx_value: ");
