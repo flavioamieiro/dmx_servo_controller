@@ -1,16 +1,16 @@
 
 #include <Arduino.h>
-#include <Wire.h>                                                                     
-#include <SPI.h>     
+#include <Wire.h>
+#include <SPI.h>
 
-#include <Adafruit_SSD1306.h> //                                  
+#include <Adafruit_SSD1306.h> //
 //////////////////////////////////////////////////////////////
 //|                 Adafruit_SSD1306.h                     |//
 //| VERSION 2.5.1 otherwise it fails PGMspace include lib  |//
 //|     https://github.com/adafruit/Adafruit_SSD1306       |//
 //|       https://github.com/alanesq/BasicOLEDMenu         |//
 //////////////////////////////////////////////////////////////
- 
+
 #include <Adafruit_GFX.h> //                                      https://github.com/adafruit/Adafruit-GFX-Library
 #include <Adafruit_PWMServoDriver.h> //                           https://github.com/adafruit/Adafruit-PWM-Servo-Driver-Library
 #include <DmxInput.h> //                                          https://github.com/jostlowe/Pico-DMX
@@ -51,7 +51,7 @@ extern "C" {//                                                    https://www.ma
   DmxInput dmxInput;
   #define   NUM_CHANNELS    4
   #define   DMX_INPUT_PIN   18
-  uint16_t  START_CHANNEL = 1;       //------------------------------------------- we need to work on this one - 
+  uint16_t  START_CHANNEL = 1;       //------------------------------------------- we need to work on this one -
   byte ledState = LOW;
 
 //Pi Pico - Flash memory
@@ -60,7 +60,7 @@ extern "C" {//                                                    https://www.ma
 
 //---------------VERBOSE---------------
   #define DEBUG
-  #define PRINT_DMX_MESSAGES
+  //#define PRINT_DMX_MESSAGES
   const String SOFTWARE_VERSION = "0.2";
 
 // Misc
@@ -81,7 +81,7 @@ extern "C" {//                                                    https://www.ma
 
   volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(1, NUM_CHANNELS)];  // CHANGE TO START_CHANNEL
 
-//Memory related variables 
+//Memory related variables
   int mem_buf[FLASH_PAGE_SIZE/sizeof(uint16_t)];  // One page buffer of ints
   int *p, mem_addr;
   unsigned int page;                         // prevent comparison of unsigned and signed int
@@ -195,7 +195,7 @@ void setup() {
     if(!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR, true)) {
       #ifdef DEBUG
         Serial.println(("\nError initialising the oled display"));
-      #endif 
+      #endif
     }
     Wire.setClock(100000);
 
@@ -208,11 +208,11 @@ void setup() {
     dmxInput.read_async(buffer);
 
     initialize_servos();    //------------------------------------------------NEED TO CHANGE THIS ONE TO FLASH STORED VALUES
-  
+
   // Starting the PWM Driver
     pwm.begin();
     pwm.setPWMFreq(50);
-    
+
 
   // display greeting message - pressing button will start menu
     displayMessage("DELED", "DMX Servo "+SOFTWARE_VERSION+"\nController");
@@ -229,7 +229,7 @@ void loop() {
   handle_dmx_message();
   reUpdateButton();      // update rotary encoder button status (if pressed activate default menu)
   menuUpdate();          // update or action the oled menu
-} 
+}
 
 
 // Start the default menu
@@ -254,7 +254,7 @@ void mainMenu() {
   oledMenu.menuItems[4] = "Reset All";
   oledMenu.menuItems[5] = "Display Off";
   oledMenu.menuItems[6] = "Back";
-} 
+}
 
 //--------------------------------------------------------------------------------------------------           // BUILD SERVO LIMITS INTERACTION
 // Actions for menu selections are put in here
@@ -262,7 +262,7 @@ void mainMenu() {
 void menuActions() {
   //podia ser uma declaracao tipo "CASE"
   if (oledMenu.menuTitle == "MENU") {    // actions when an item is selected in menu
-    // ADDRESS - 'enter a value' (none blocking) 
+    // ADDRESS - 'enter a value' (none blocking)
     if (oledMenu.selectedMenuItem == 1) {
       #ifdef DEBUG
         Serial.println("menu: enter addr value");
@@ -270,7 +270,7 @@ void menuActions() {
       resetMenu();
       addr_changer();       // enter a value
     }
-    // LIMITS create a menu from a list 
+    // LIMITS create a menu from a list
     else if (oledMenu.selectedMenuItem == 2) {
       #ifdef DEBUG
         Serial.println("menu: LIMITS");
@@ -308,7 +308,7 @@ void menuActions() {
     }
     oledMenu.selectedMenuItem = 0;                // clear menu item selected flag as it has been actioned
   }
-  
+
   // actions when an item is selected in the demo_list menu
   if (oledMenu.menuTitle == "Servo Limits") {
     if (oledMenu.selectedMenuItem == 1) {
@@ -381,9 +381,9 @@ void idleMenu() {
   resetMenu();                            // clear any previous menu
   menuMode = idle;                        // enable menu mode
   oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
-} 
+}
 
-//-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS 
+//-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS
 
 void addr_changer() {
   resetMenu();                           // clear any previous menu
@@ -457,7 +457,7 @@ void menuUpdate() {
       return;
     }
   }
-  
+
     switch (menuMode) {
       // if there is an active menu
       case menu:
@@ -499,11 +499,10 @@ void menuValues() {
     String tString = String(oledMenu.mValueEntered);
     #ifdef DEBUG
       Serial.println("DMX Address: The value entered was " + tString);
-    #endif 
+    #endif
     mainMenu();
     // alternatively use 'resetMenu()' here to turn menus off after value entered - or use 'defaultMenu()' to re-start the default menu
   }
-  // action for "Servo 1 min value"
   if (oledMenu.menuTitle == "Servo 1 min value") {
     servoMinValueAction(1);
     mainMenu();
@@ -583,7 +582,7 @@ void serviceMenu() {
         #ifdef DEBUG
           Serial.println("menu '" + oledMenu.menuTitle + "' item '" + oledMenu.menuItems[oledMenu.highlightedMenuItem] + "' selected");
         #endif
-        
+
       }
 
     const int _centreLine = displayMaxLines / 2 + 1;    // mid list point
@@ -620,11 +619,11 @@ void serviceMenu() {
     //// how to display some updating Info. on the menu screen
     // display.setCursor(80, 25);
     // display.println(millis());
- 
+
     display.display();
 }
 
-// ---------------------------------------------------------------------------------       //ADICIONAR ACELERAÇÃO NO CONTROLE DO DMX ADDR 
+// ---------------------------------------------------------------------------------       //ADICIONAR ACELERAÇÃO NO CONTROLE DO DMX ADDR
 //                        -service value entry
 // if _blocking set to 1 then all other tasks are stopped until a value is entered
 // ---------------------------------------------------------------------------------
@@ -752,7 +751,7 @@ void createList(String _title, int _noOfElements, String *_list) {
 //                         -idle display
 // ----------------------------------------------------------------             // ADD blinking screen when no dmx signal (no_dmx_flag == true)
 void idleDisplay(){
- 
+
   menuMode = idle;
 
   char channelBuffer[4];
@@ -769,13 +768,13 @@ void idleDisplay(){
     else display.setTextSize(1);
 
     if(no_dmx_flag){
-      if(millis() - lcd_blink_timestamp >= 350){ 
+      if(millis() - lcd_blink_timestamp >= 350){
         lcd_blink_timestamp = millis();
         toggle_title = !toggle_title;  // Toggle the flag
       }
       if(toggle_title){
           t_title = originalTitle;
-        } 
+        }
         else {
           t_title = "";
         }
