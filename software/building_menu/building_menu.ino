@@ -49,7 +49,7 @@ extern "C" {//                                                    https://www.ma
 // DMX512
   DmxInput dmxInput;
   #define   NUM_CHANNELS    4
-  uint16_t  START_CHANNEL   1       //------------------------------------------- we need to work on this one 
+  uint16_t  START_CHANNEL = 1;       //------------------------------------------- we need to work on this one 
   #define   DMX_INPUT_PIN   18
   byte ledState = LOW;
 

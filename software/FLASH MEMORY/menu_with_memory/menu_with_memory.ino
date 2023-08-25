@@ -43,10 +43,11 @@ extern "C" {//                                                    https://www.ma
 // We found by testing in the servos we had that the following
 // min/max values result in a 180 rotation range.
   #define DEFAULT_SERVO_MIN       64
-  #define DEFAULT_SERVO_MAX       512
+  #define DEFAULT_SERVO_MAX       255
   #define DEFAULT_SERVO_DMX_VALUE 127
   #define SERVO_ABSOLUTE_MIN      0
   #define SERVO_ABSOLUTE_MAX      700
+
 // DMX512
   DmxInput dmxInput;
   #define   NUM_CHANNELS    4
@@ -61,6 +62,7 @@ extern "C" {//                                                    https://www.ma
 //---------------VERBOSE---------------
   #define DEBUG
   //#define PRINT_DMX_MESSAGES
+
   const String SOFTWARE_VERSION = "0.2";
 
 // Misc
@@ -78,7 +80,9 @@ extern "C" {//                                                    https://www.ma
   bool        no_dmx_flag =         false;   // Flag for the screen timeout function
   uint32_t    lcd_blink_timestamp = 0;
   bool        toggle_title =        true;
-
+  int         limits_flag =         0;       // Flag for the servo limits menu
+  bool        highlight_limit =     false;
+  
   volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(1, NUM_CHANNELS)];  // CHANGE TO START_CHANNEL
 
 //Memory related variables
@@ -104,7 +108,6 @@ extern "C" {//                                                    https://www.ma
   void update_servo();
   void idleDisplay();
   void menuValues();
-  void addr_changer();
   void menuActions();
   void idleMenu();
   void mainMenu();
@@ -270,14 +273,27 @@ void menuActions() {
       resetMenu();
       addr_changer();       // enter a value
     }
+
     // LIMITS create a menu from a list
     else if (oledMenu.selectedMenuItem == 2) {
       #ifdef DEBUG
         Serial.println("menu: LIMITS");
       #endif
-      String tList[]={"servo 1 - min", "servo 1 - max","servo 2 - min", "servo 2 - max","servo 3 - min", "servo 3 - max","servo 4 - min", "servo 4 - max","Back"};
-      createList("Servo Limits", 9, &tList[0]);
+      String tList[9]={
+        "Servo 1 - MIN", 
+        "Servo 1 - MAX",
+        "Servo 2 - MIN", 
+        "Servo 2 - MAX",
+        "Servo 3 - MIN", 
+        "Servo 3 - MAX",
+        "Servo 4 - MIN", 
+        "Servo 4 - MAX",
+        "Back"
+        };
+        limits_flag = 1;
+        createList("Servo Limits", 9, &tList[0]); // handler in ServiceMenu
     }
+    
     // Info -- VERSION message
     else if (oledMenu.selectedMenuItem == 3) {
       #ifdef DEBUG
@@ -285,6 +301,7 @@ void menuActions() {
       #endif
       displayMessage("Version v"+ SOFTWARE_VERSION, "SERVO DMX CONTROLLER\nDELED + AMIEIRO");    // 21 chars per line, "\n" = next line
     }
+    
     // RESET ALL
     else if (oledMenu.selectedMenuItem == 4) {
       #ifdef DEBUG
@@ -364,6 +381,7 @@ void menuActions() {
       #ifdef DEBUG
         Serial.println("Servo Limits: Back to main menu");
       #endif
+      limits_flag = 0;
       mainMenu();
     }
     oledMenu.selectedMenuItem = 0;                // clear menu item selected flag as it has been actioned
@@ -373,74 +391,85 @@ void menuActions() {
     //PRECISA DE CODIGO AQUI ?
   }
 }
-
-//--------------------------------------------------------------------------------------------------
-
-//    when an item is selected it is actioned in menuActions()
-void idleMenu() {
-  resetMenu();                            // clear any previous menu
-  menuMode = idle;                        // enable menu mode
-  oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
-}
-
-//-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS
-
-void addr_changer() {
-  resetMenu();                           // clear any previous menu
-  menuMode = value;                      // enable value entry
-  oledMenu.menuTitle = "DMX Address";    // title (used to identify which number was entered)
-  oledMenu.mValueLow = 0;                // minimum value allowed
-  oledMenu.mValueHigh = 512;             // maximum value allowed
-  oledMenu.mValueStep = 1;               // step size
-  oledMenu.mValueEntered = 50;           // starting value                  // VARIAVEL GLOBAL DE ENDEREÇO
-}
-
-//--------------------------------------------------------------------------------------------------
-
-void servo_min_changer(int idx) {
-  resetMenu();
-  menuMode = value;
-  char buf[25];
-  snprintf(buf, 25, "Servo %d min value", idx);
-  oledMenu.menuTitle = buf;
-  oledMenu.mValueLow = SERVO_ABSOLUTE_MIN;
-  oledMenu.mValueHigh = DEFAULT_SERVO_MAX;
-  oledMenu.mValueStep = 1;
-  oledMenu.mValueEntered = DEFAULT_SERVO_MIN;
-}
-
-void servo_max_changer(int idx) {
-  resetMenu();
-  menuMode = value;
-  char buf[25];
-  snprintf(buf, 25, "Servo %d max value", idx);
-  oledMenu.menuTitle = buf;
-  oledMenu.mValueLow = DEFAULT_SERVO_MIN;
-  oledMenu.mValueHigh = SERVO_ABSOLUTE_MAX;
-  oledMenu.mValueStep = 1;
-  oledMenu.mValueEntered = DEFAULT_SERVO_MAX;
-}
-
-
 // ----------------------------------------------------------------
-//                   -button debounce (rotary encoder)
-//             update rotary encoder current button status
+//                       -service active menu
 // ----------------------------------------------------------------
-void reUpdateButton() {
-    bool tReading = digitalRead(encoder0Press);        // read current button state
-    if (tReading != rotaryEncoder.encoderPrevButton) rotaryEncoder.reLastButtonChange = millis();     // if it has changed reset timer
-    if ( (unsigned long)(millis() - rotaryEncoder.reLastButtonChange) > rotaryEncoder.reDebounceDelay ) {  // if button state is stable
-      if (rotaryEncoder.encoderPrevButton == rotaryEncoder.reButtonPressedState) {
-        if (rotaryEncoder.reButtonDebounced == 0) {    // if the button has been pressed
-          rotaryEncoder.reButtonPressed = 1;           // flag set when the button has been pressed
-          if (menuMode == off) defaultMenu();          // if the display is off start the default menu
-        }
-        rotaryEncoder.reButtonDebounced = 1;           // debounced button status  (1 when pressed)
-      } else {
-        rotaryEncoder.reButtonDebounced = 0;
+void serviceMenu() {
+
+    // rotary encoder
+      if (rotaryEncoder.encoder0Pos >= itemTrigger) {
+        rotaryEncoder.encoder0Pos -= itemTrigger;
+        oledMenu.highlightedMenuItem++;
+        oledMenu.lastMenuActivity = millis();   // log time
       }
-    }
-    rotaryEncoder.encoderPrevButton = tReading;            // update last state read
+      if (rotaryEncoder.encoder0Pos <= -itemTrigger) {
+        rotaryEncoder.encoder0Pos += itemTrigger;
+        oledMenu.highlightedMenuItem--;
+        oledMenu.lastMenuActivity = millis();   // log time
+      }
+      if (rotaryEncoder.reButtonPressed == 1) {
+        oledMenu.selectedMenuItem = oledMenu.highlightedMenuItem;     // flag that the item has been selected
+        oledMenu.lastMenuActivity = millis();   // log time
+        #ifdef DEBUG
+          Serial.println("menu '" + oledMenu.menuTitle + "' item '" + oledMenu.menuItems[oledMenu.highlightedMenuItem] + "' selected");
+        #endif
+
+      }
+
+    const int _centreLine = displayMaxLines / 2 + 1;    // mid list point
+    display.clearDisplay();
+    display.setTextColor(WHITE);
+
+    // verify valid highlighted item
+      if (oledMenu.highlightedMenuItem > oledMenu.noOfmenuItems) oledMenu.highlightedMenuItem = oledMenu.noOfmenuItems;
+      if (oledMenu.highlightedMenuItem < 1) oledMenu.highlightedMenuItem = 1;
+
+    // title
+      display.setCursor(0, 0);
+      if (menuLargeText) {
+        display.setTextSize(2);
+        display.println(oledMenu.menuItems[oledMenu.highlightedMenuItem].substring(0, MaxmenuTitleLength));
+      } else {
+        if (oledMenu.menuTitle.length() > MaxmenuTitleLength) display.setTextSize(1);
+        else display.setTextSize(1);
+        display.println(oledMenu.menuTitle);
+      }
+      display.drawLine(0, topLine-1, display.width(), topLine-1, WHITE);       // draw horizontal line under title
+
+    // menu
+      display.setTextSize(1);
+      display.setCursor(0, topLine);
+      for (int i=1; i <= displayMaxLines; i++) {
+        int item = oledMenu.highlightedMenuItem - _centreLine + i;
+        if (item == oledMenu.highlightedMenuItem){
+          display.setTextColor(BLACK, WHITE);
+        }
+        else display.setTextColor(WHITE);
+        if (item > 0 && item <= oledMenu.noOfmenuItems){ // -------------------SERVO LIMITS highlight and value handler
+          if(limits_flag == 1 && item <= NUM_CHANNELS*2){
+            
+            display.print(oledMenu.menuItems[item]);
+
+            display.setTextColor(WHITE);
+            display.print(" ");
+            if(item % 2) display.println(servos[((item+1) / 2)-1].min_pos);
+            else{
+              display.println(servos[((item+1) / 2)-1].max_pos);
+            }  
+          }
+          else{
+            display.println(oledMenu.menuItems[item]);
+          }
+        }
+         
+        else display.println(" ");
+      }
+
+    //// how to display some updating Info. on the menu screen
+    // display.setCursor(80, 25);
+    // display.println(millis());
+
+    display.display();
 }
 
 // ----------------------------------------------------------------
@@ -537,6 +566,56 @@ void menuValues() {
   }
 }
 
+
+//--------------------------------------------------------------------------------------------------
+
+//    when an item is selected it is actioned in menuActions()
+void idleMenu() {
+  resetMenu();                            // clear any previous menu
+  menuMode = idle;                        // enable menu mode
+  oledMenu.menuTitle = "SERVO DMX";       // menus title (used to identify it)
+}
+
+//-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS
+
+void addr_changer() {
+  resetMenu();                           // clear any previous menu
+  menuMode = value;                      // enable value entry
+  oledMenu.menuTitle = "DMX Address";    // title (used to identify which number was entered)
+  oledMenu.mValueLow = 0;                // minimum value allowed
+  oledMenu.mValueHigh = 512;             // maximum value allowed
+  oledMenu.mValueStep = 1;               // step size
+  oledMenu.mValueEntered = 50;           // starting value                  // VARIAVEL GLOBAL DE ENDEREÇO
+}
+
+//--------------------------------------------------------------------------------------------------
+//                      -SERVOS HANDLERS (Flavio)
+//--------------------------------------------------------------------------------------------------
+
+void servo_min_changer(int idx) {
+  resetMenu();
+  menuMode = value;
+  char buf[25];
+  snprintf(buf, 25, "Servo %d min value", idx);
+  oledMenu.menuTitle = buf;
+  oledMenu.mValueLow = SERVO_ABSOLUTE_MIN;
+  oledMenu.mValueHigh = DEFAULT_SERVO_MAX;
+  oledMenu.mValueStep = 1;
+  oledMenu.mValueEntered = DEFAULT_SERVO_MIN;
+}
+
+void servo_max_changer(int idx) {
+  resetMenu();
+  menuMode = value;
+  char buf[25];
+  snprintf(buf, 25, "Servo %d max value", idx);
+  oledMenu.menuTitle = buf;
+  oledMenu.mValueLow = DEFAULT_SERVO_MIN;
+  oledMenu.mValueHigh = SERVO_ABSOLUTE_MAX;
+  oledMenu.mValueStep = 1;
+  oledMenu.mValueEntered = DEFAULT_SERVO_MAX;
+}
+
 void servoMinValueAction(int idx) {
   #ifdef DEBUG
     Serial.print("Servo ");
@@ -545,7 +624,7 @@ void servoMinValueAction(int idx) {
     Serial.println(oledMenu.mValueEntered);
   #endif
   servos[idx-1].min_pos = oledMenu.mValueEntered;
-  oledMenu.selectedMenuItem = 2;
+  //oledMenu.selectedMenuItem = 2;
 }
 
 void servoMaxValueAction(int idx) {
@@ -556,72 +635,11 @@ void servoMaxValueAction(int idx) {
     Serial.println(oledMenu.mValueEntered);
   #endif
   servos[idx-1].max_pos = oledMenu.mValueEntered;
-  oledMenu.selectedMenuItem = 2;
+  //oledMenu.selectedMenuItem = 2;
 }
 
 
-// ----------------------------------------------------------------
-//                       -service active menu
-// ----------------------------------------------------------------
-void serviceMenu() {
 
-    // rotary encoder
-      if (rotaryEncoder.encoder0Pos >= itemTrigger) {
-        rotaryEncoder.encoder0Pos -= itemTrigger;
-        oledMenu.highlightedMenuItem++;
-        oledMenu.lastMenuActivity = millis();   // log time
-      }
-      if (rotaryEncoder.encoder0Pos <= -itemTrigger) {
-        rotaryEncoder.encoder0Pos += itemTrigger;
-        oledMenu.highlightedMenuItem--;
-        oledMenu.lastMenuActivity = millis();   // log time
-      }
-      if (rotaryEncoder.reButtonPressed == 1) {
-        oledMenu.selectedMenuItem = oledMenu.highlightedMenuItem;     // flag that the item has been selected
-        oledMenu.lastMenuActivity = millis();   // log time
-        #ifdef DEBUG
-          Serial.println("menu '" + oledMenu.menuTitle + "' item '" + oledMenu.menuItems[oledMenu.highlightedMenuItem] + "' selected");
-        #endif
-
-      }
-
-    const int _centreLine = displayMaxLines / 2 + 1;    // mid list point
-    display.clearDisplay();
-    display.setTextColor(WHITE);
-
-    // verify valid highlighted item
-      if (oledMenu.highlightedMenuItem > oledMenu.noOfmenuItems) oledMenu.highlightedMenuItem = oledMenu.noOfmenuItems;
-      if (oledMenu.highlightedMenuItem < 1) oledMenu.highlightedMenuItem = 1;
-
-    // title
-      display.setCursor(0, 0);
-      if (menuLargeText) {
-        display.setTextSize(2);
-        display.println(oledMenu.menuItems[oledMenu.highlightedMenuItem].substring(0, MaxmenuTitleLength));
-      } else {
-        if (oledMenu.menuTitle.length() > MaxmenuTitleLength) display.setTextSize(1);
-        else display.setTextSize(1);
-        display.println(oledMenu.menuTitle);
-      }
-      display.drawLine(0, topLine-1, display.width(), topLine-1, WHITE);       // draw horizontal line under title
-
-    // menu
-      display.setTextSize(1);
-      display.setCursor(0, topLine);
-      for (int i=1; i <= displayMaxLines; i++) {
-        int item = oledMenu.highlightedMenuItem - _centreLine + i;
-        if (item == oledMenu.highlightedMenuItem) display.setTextColor(BLACK, WHITE);
-        else display.setTextColor(WHITE);
-        if (item > 0 && item <= oledMenu.noOfmenuItems) display.println(oledMenu.menuItems[item]);
-        else display.println(" ");
-      }
-
-    //// how to display some updating Info. on the menu screen
-    // display.setCursor(80, 25);
-    // display.println(millis());
-
-    display.display();
-}
 
 // ---------------------------------------------------------------------------------       //ADICIONAR ACELERAÇÃO NO CONTROLE DO DMX ADDR
 //                        -service value entry
@@ -705,14 +723,35 @@ int serviceValue(bool _blocking) {
 //                       -create list for menu
 // ----------------------------------------------------------------
 void createList(String _title, int _noOfElements, String *_list) {
-  resetMenu();                      // clear any previous menu
-  menuMode = menu;                  // enable menu mode
-  oledMenu.noOfmenuItems = _noOfElements;    // set the number of items in this menu
-  oledMenu.menuTitle = _title;               // menus title (used to identify it)
+  resetMenu();                                // clear any previous menu
+  menuMode = menu;                            // enable menu mode
+  oledMenu.noOfmenuItems = _noOfElements;     // set the number of items in this menu
+  oledMenu.menuTitle = _title;                // menus title (used to identify it)
 
   for (int i=1; i <= _noOfElements; i++) {
-    oledMenu.menuItems[i] = _list[i-1];        // set the menu items
+    oledMenu.menuItems[i] = _list[i-1];       // set the menu items
   }
+}
+
+// ----------------------------------------------------------------
+//                   -button debounce (rotary encoder)
+//             update rotary encoder current button status
+// ----------------------------------------------------------------
+void reUpdateButton() {
+    bool tReading = digitalRead(encoder0Press);        // read current button state
+    if (tReading != rotaryEncoder.encoderPrevButton) rotaryEncoder.reLastButtonChange = millis();     // if it has changed reset timer
+    if ( (unsigned long)(millis() - rotaryEncoder.reLastButtonChange) > rotaryEncoder.reDebounceDelay ) {  // if button state is stable
+      if (rotaryEncoder.encoderPrevButton == rotaryEncoder.reButtonPressedState) {
+        if (rotaryEncoder.reButtonDebounced == 0) {    // if the button has been pressed
+          rotaryEncoder.reButtonPressed = 1;           // flag set when the button has been pressed
+          if (menuMode == off) defaultMenu();          // if the display is off start the default menu
+        }
+        rotaryEncoder.reButtonDebounced = 1;           // debounced button status  (1 when pressed)
+      } else {
+        rotaryEncoder.reButtonDebounced = 0;
+      }
+    }
+    rotaryEncoder.encoderPrevButton = tReading;            // update last state read
 }
 
 // ----------------------------------------------------------------
@@ -866,12 +905,12 @@ void handle_dmx_message() {
 // ----------------------------------------------------------------
 void initialize_servos() {
     for (int i = 0; i < NUM_CHANNELS; i++) {
-      servos[i].dmx_channel = i+1;
-      servos[i].pwm_channel = i;
-      servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
-      servos[i].min_pos = DEFAULT_SERVO_MIN;
-      servos[i].max_pos = DEFAULT_SERVO_MAX;
-      servos[i].last_update = 0;
+      servos[i].dmx_channel =   i+1;
+      servos[i].pwm_channel =   i;
+      servos[i].dmx_value =     DEFAULT_SERVO_DMX_VALUE;
+      servos[i].min_pos =       DEFAULT_SERVO_MIN;
+      servos[i].max_pos =       DEFAULT_SERVO_MAX;
+      servos[i].last_update =   0;
     }
 }
 
@@ -894,7 +933,6 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     #endif
     #endif
 }
-
 
 // -------------------------------------------------------------------------
 //                     -interrupt for rotary encoder
