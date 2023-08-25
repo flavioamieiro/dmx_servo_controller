@@ -310,6 +310,30 @@ void menuActions() {
   
   // actions when an item is selected in the demo_list menu
   if (oledMenu.menuTitle == "Servo Limits") {
+    if (oledMenu.selectedMenuItem == 1) {
+      #ifdef DEBUG
+        Serial.println("Servo Limits: servo 1 - min");
+      #endif
+      servo_min_changer(1);
+    }
+    if (oledMenu.selectedMenuItem == 3) {
+      #ifdef DEBUG
+        Serial.println("Servo Limits: servo 2 - min");
+      #endif
+      servo_min_changer(2);
+    }
+    if (oledMenu.selectedMenuItem == 5) {
+      #ifdef DEBUG
+        Serial.println("Servo Limits: servo 3 - min");
+      #endif
+      servo_min_changer(3);
+    }
+    if (oledMenu.selectedMenuItem == 7) {
+      #ifdef DEBUG
+        Serial.println("Servo Limits: servo 4 - min");
+      #endif
+      servo_min_changer(4);
+    }
     if (oledMenu.selectedMenuItem == 9) {
       #ifdef DEBUG
         Serial.println("Servo Limits: Back to main menu");
@@ -344,6 +368,21 @@ void addr_changer() {
   oledMenu.mValueStep = 1;               // step size
   oledMenu.mValueEntered = 50;           // starting value                  // VARIAVEL GLOBAL DE ENDEREÇO
 }
+
+//--------------------------------------------------------------------------------------------------
+
+void servo_min_changer(int idx) {
+  resetMenu();
+  menuMode = value;
+  char buf[25];
+  snprintf(buf, 25, "Servo %d min value", idx);
+  oledMenu.menuTitle = buf;
+  oledMenu.mValueLow = 0;
+  oledMenu.mValueHigh = DEFAULT_SERVO_MAX;
+  oledMenu.mValueStep = 1;
+  oledMenu.mValueEntered = DEFAULT_SERVO_MIN;
+}
+
 
 // ----------------------------------------------------------------
 //                   -button debounce (rotary encoder)
@@ -426,7 +465,36 @@ void menuValues() {
     mainMenu();
     // alternatively use 'resetMenu()' here to turn menus off after value entered - or use 'defaultMenu()' to re-start the default menu
   }
+  // action for "Servo 1 min value"
+  if (oledMenu.menuTitle == "Servo 1 min value") {
+    servoMinValueAction(1);
+    mainMenu();
+  }
+  if (oledMenu.menuTitle == "Servo 2 min value") {
+    servoMinValueAction(2);
+    mainMenu();
+  }
+  if (oledMenu.menuTitle == "Servo 3 min value") {
+    servoMinValueAction(3);
+    mainMenu();
+  }
+  if (oledMenu.menuTitle == "Servo 4 min value") {
+    servoMinValueAction(4);
+    mainMenu();
+  }
 }
+
+void servoMinValueAction(int idx) {
+  #ifdef DEBUG
+    Serial.print("Servo ");
+    Serial.print(idx);
+    Serial.print(" min value: The value entered was ");
+    Serial.println(oledMenu.mValueEntered);
+  #endif
+  servos[idx-1].min_pos = oledMenu.mValueEntered;
+  oledMenu.selectedMenuItem = 2;
+}
+
 // ----------------------------------------------------------------
 //                       -service active menu
 // ----------------------------------------------------------------
