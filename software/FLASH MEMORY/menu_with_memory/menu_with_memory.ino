@@ -105,7 +105,6 @@ extern "C" {//                                                    https://www.ma
   void idleDisplay();
   void menuValues();
   void addr_changer();
-  void menuActions();
   void idleMenu();
   void mainMenu();
   void defaultMenu();
@@ -155,7 +154,7 @@ extern "C" {//                                                    https://www.ma
     int pwm_channel;
     int dmx_value;
     uint16_t min_pos; // -----------------------changed this one to uint16_t to fit in one single flash page mem (256bytes)
-    uint16_t max_pos;
+    uint16_t max_pos; // ------------------------- 0 to 4096 12 bit value / but PWM for servo range is 
     int last_update;
   };
 struct Servo servos[NUM_CHANNELS];
@@ -256,6 +255,16 @@ void mainMenu() {
   oledMenu.menuItems[6] = "Back";
 }
 
+void limitsMenu() {
+  resetMenu();                            // clear any previous menu
+  menuMode = menu;                        // enable menu mode
+  #ifdef DEBUG
+        Serial.println("menu: LIMITS");
+      #endif
+  String tList[]={"servo 1 - min", "servo 1 - max","servo 2 - min", "servo 2 - max","servo 3 - min", "servo 3 - max","servo 4 - min", "servo 4 - max","Back"};
+  createList("Servo Limits", 9, &tList[0]);
+}
+
 //--------------------------------------------------------------------------------------------------           // BUILD SERVO LIMITS INTERACTION
 // Actions for menu selections are put in here
 
@@ -272,11 +281,7 @@ void menuActions() {
     }
     // LIMITS create a menu from a list
     else if (oledMenu.selectedMenuItem == 2) {
-      #ifdef DEBUG
-        Serial.println("menu: LIMITS");
-      #endif
-      String tList[]={"servo 1 - min", "servo 1 - max","servo 2 - min", "servo 2 - max","servo 3 - min", "servo 3 - max","servo 4 - min", "servo 4 - max","Back"};
-      createList("Servo Limits", 9, &tList[0]);
+      limitsMenu();
     }
     // Info -- VERSION message
     else if (oledMenu.selectedMenuItem == 3) {
@@ -309,7 +314,7 @@ void menuActions() {
     oledMenu.selectedMenuItem = 0;                // clear menu item selected flag as it has been actioned
   }
 
-  // actions when an item is selected in the demo_list menu
+  // actions when an item is selected in the servo_limits menu
   if (oledMenu.menuTitle == "Servo Limits") {
     if (oledMenu.selectedMenuItem == 1) {
       #ifdef DEBUG
@@ -406,7 +411,7 @@ void servo_min_changer(int idx) {
   oledMenu.mValueLow = SERVO_ABSOLUTE_MIN;
   oledMenu.mValueHigh = DEFAULT_SERVO_MAX;
   oledMenu.mValueStep = 1;
-  oledMenu.mValueEntered = DEFAULT_SERVO_MIN;
+  oledMenu.mValueEntered = servos[idx-1].min_pos;
 }
 
 void servo_max_changer(int idx) {
@@ -418,7 +423,7 @@ void servo_max_changer(int idx) {
   oledMenu.mValueLow = DEFAULT_SERVO_MIN;
   oledMenu.mValueHigh = SERVO_ABSOLUTE_MAX;
   oledMenu.mValueStep = 1;
-  oledMenu.mValueEntered = DEFAULT_SERVO_MAX;
+  oledMenu.mValueEntered = servos[idx-1].max_pos;
 }
 
 
@@ -500,40 +505,40 @@ void menuValues() {
     #ifdef DEBUG
       Serial.println("DMX Address: The value entered was " + tString);
     #endif
-    mainMenu();
+    limitsMenu();
     // alternatively use 'resetMenu()' here to turn menus off after value entered - or use 'defaultMenu()' to re-start the default menu
   }
   if (oledMenu.menuTitle == "Servo 1 min value") {
     servoMinValueAction(1);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 1 max value") {
     servoMaxValueAction(1);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 2 min value") {
     servoMinValueAction(2);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 2 max value") {
     servoMaxValueAction(2);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 3 min value") {
     servoMinValueAction(3);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 3 max value") {
     servoMaxValueAction(3);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 4 min value") {
     servoMinValueAction(4);
-    mainMenu();
+    limitsMenu();
   }
   if (oledMenu.menuTitle == "Servo 4 max value") {
     servoMaxValueAction(4);
-    mainMenu();
+    limitsMenu();
   }
 }
 
@@ -545,7 +550,8 @@ void servoMinValueAction(int idx) {
     Serial.println(oledMenu.mValueEntered);
   #endif
   servos[idx-1].min_pos = oledMenu.mValueEntered;
-  oledMenu.selectedMenuItem = 2;
+  // Save servos to flash
+  //oledMenu.selectedMenuItem = 2;
 }
 
 void servoMaxValueAction(int idx) {
@@ -556,7 +562,8 @@ void servoMaxValueAction(int idx) {
     Serial.println(oledMenu.mValueEntered);
   #endif
   servos[idx-1].max_pos = oledMenu.mValueEntered;
-  oledMenu.selectedMenuItem = 2;
+  // save servos to flash
+  //oledMenu.selectedMenuItem = 2;
 }
 
 
@@ -894,6 +901,13 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     #endif
     #endif
 }
+// -------------------------------------------------------------------------
+//                             Read Flash memory 
+// -------------------------------------------------------------------------
+
+
+
+
 
 
 // -------------------------------------------------------------------------
