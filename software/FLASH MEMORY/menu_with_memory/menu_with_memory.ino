@@ -170,7 +170,7 @@ extern "C" {//                                                    https://www.ma
   Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // PCA9685 I2C pwm module
-//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
+  Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 
 
 // ----------------------------------------------------------------
@@ -178,18 +178,18 @@ extern "C" {//                                                    https://www.ma
 // ----------------------------------------------------------------
 void setup() {
 
-  #ifdef DEBUG
-    Serial.begin(115200);
-    while (!Serial);
-    Serial.println("---------------Starting Controller---------------");
-  #endif
-
   pinMode(LED_BUILTIN, OUTPUT);     // onboard indicator led
   digitalWrite(LED_BUILTIN, HIGH);
   delay(50);
   digitalWrite(LED_BUILTIN, LOW);
   delay(50);
   digitalWrite(LED_BUILTIN, HIGH);
+
+  #ifdef DEBUG
+    Serial.begin(115200);
+    while (!Serial);
+    Serial.println("---------------Starting Controller---------------");
+  #endif
 
 // configure gpio pins for rotary encoder
   pinMode(encoder0Press,  INPUT_PULLUP);
@@ -215,8 +215,8 @@ void setup() {
   dmxInput.read_async(buffer);
 
 // Starting the PWM Driver
-  //pwm.begin();
-  //pwm.setPWMFreq(50);
+  pwm.begin();
+  pwm.setPWMFreq(50);
 
 //Restore values from memory
   readValuesFromFlash();
@@ -953,7 +953,7 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     servo->dmx_value = new_dmx_value;
     servo->last_update = millis();
     int pos = map(servo->dmx_value, 0, 255, servo->min_pos, servo->max_pos);
-    //pwm.setPWM(servo->pwm_channel, 0, pos);
+    pwm.setPWM(servo->pwm_channel, 0, pos);
     #ifdef DEBUG
     #ifdef PRINT_DMX_MESSAGES
         Serial.print("dmx_value: ");
