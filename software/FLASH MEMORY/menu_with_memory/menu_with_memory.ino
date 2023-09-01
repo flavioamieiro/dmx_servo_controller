@@ -47,11 +47,12 @@ extern "C" {//                                                    https://www.ma
   #define DEFAULT_SERVO_DMX_VALUE 127
   #define SERVO_ABSOLUTE_MIN      0
   #define SERVO_ABSOLUTE_MAX      700
+  
 // DMX512
   DmxInput dmxInput;
   #define   NUM_CHANNELS    4
   #define   DMX_INPUT_PIN   18
-  uint16_t  START_CHANNEL = 1;       //------------------------------------------- we need to work on this one -
+  uint16_t  START_CHANNEL;
   byte ledState = LOW;
 
 //Pi Pico - Flash memory
@@ -61,7 +62,8 @@ extern "C" {//                                                    https://www.ma
 //---------------VERBOSE---------------
   #define DEBUG
   //#define PRINT_DMX_MESSAGES
-  const String SOFTWARE_VERSION = "0.2";
+
+  const String SOFTWARE_VERSION = "0.3";
 
 // Misc
   #define     BUTTONPRESSEDSTATE    0        // rotary encoder gpio pin logic level when the button is pressed (usually 0)
@@ -79,36 +81,41 @@ extern "C" {//                                                    https://www.ma
   uint32_t    lcd_blink_timestamp = 0;
   bool        toggle_title =        true;
 
+//DMX buffer
   volatile uint8_t buffer[DMXINPUT_BUFFER_SIZE(1, NUM_CHANNELS)];  // CHANGE TO START_CHANNEL
 
 //Memory related variables
-  int mem_buf[FLASH_PAGE_SIZE/sizeof(uint16_t)];  // One page buffer of ints
-  int *p, mem_addr;
-  unsigned int page;                         // prevent comparison of unsigned and signed int
-  int first_empty_page = -1;
+  uint16_t flash_buf_temp[NUM_CHANNELS+1];  // This is where we'll store the values in memory
+  //LAYOUT: 1 min | 1 max | 2 min | 2 max | ... | 4 max | dmx_start_addr
+  uint16_t flash_buf[FLASH_PAGE_SIZE/sizeof(uint16_t)];  // One page buffer of uint16_tint16_t
+
 
 // forward functions declarations
-  void doEncoder();
+  int find_free_memory_page();
+  int serviceValue(bool _blocking);
+  
   void mainMenu();
-  void menuActions();
-  void addr_changer();
-  void menuValues();
-  void reUpdateButton();
-  void serviceMenu();
-  int  serviceValue(bool _blocking);
-  void createList(String _title, int _noOfElements, String *_list);
-  void displayMessage(String _title, String _message);
-  void resetMenu();
-  void handle_dmx_message();
-  void initialize_servos();
-  void update_servo();
-  void idleDisplay();
-  void menuValues();
-  void addr_changer();
   void idleMenu();
-  void mainMenu();
-  void defaultMenu();
-
+  void resetMenu();
+  void doEncoder();
+  void menuValues();
+  void menuActions();
+  void serviceMenu();
+  void idleDisplay();
+  void update_servo();
+  void addr_changer();
+  void reset_servos();
+  void reUpdateButton();
+  void initialize_servos();
+  void handle_dmx_message();
+  void writeValuesToFlash();
+  void readValuesFromFlash();
+  void servo_min_changer(int idx);
+  void servo_max_changer(int idx);
+  void servoMinValueAction(int idx);
+  void servoMaxValueAction(int idx);
+  void displayMessage(String _title, String _message);
+  void createList(String _title, int _noOfElements, String *_list);
 
   // modes that the menu system can be in
   enum menuModes {
@@ -153,17 +160,17 @@ extern "C" {//                                                    https://www.ma
     int dmx_channel;
     int pwm_channel;
     int dmx_value;
-    uint16_t min_pos; // -----------------------changed this one to uint16_t to fit in one single flash page mem (256bytes)
+    uint16_t min_pos; // ------------------------- changed this one to uint16_t to fit in one single flash page mem (256bytes)
     uint16_t max_pos; // ------------------------- 0 to 4096 12 bit value / but PWM for servo range is 
     int last_update;
   };
-struct Servo servos[NUM_CHANNELS];
+  struct Servo servos[NUM_CHANNELS];
 
 // oled SSD1306 display connected to I2C
-Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+  Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // PCA9685 I2C pwm module
-Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
+//Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 
 
 // ----------------------------------------------------------------
@@ -171,53 +178,63 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(PWM_ADDR, Wire);
 // ----------------------------------------------------------------
 void setup() {
 
+  #ifdef DEBUG
+    Serial.begin(115200);
+    while (!Serial);
+    Serial.println("---------------Starting Controller---------------");
+  #endif
+
+  pinMode(LED_BUILTIN, OUTPUT);     // onboard indicator led
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(50);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(50);
+  digitalWrite(LED_BUILTIN, HIGH);
+
+// configure gpio pins for rotary encoder
+  pinMode(encoder0Press,  INPUT_PULLUP);
+  pinMode(encoder0PinA,   INPUT);
+  pinMode(encoder0PinB,   INPUT);
+
+// initialise the oled display
+
+  Wire.begin();
+  if(!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR, true)) {
     #ifdef DEBUG
-      Serial.begin(115200); //while (!Serial); delay(50);       // start serial comms non-blocking
-      Serial.println("\nStarting menu\n");
+      Serial.println(("\nError initialising the oled display"));
     #endif
+  }
+  Wire.setClock(100000);
 
-    pinMode(LED_BUILTIN, OUTPUT);     // onboard indicator led
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(50);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(50);
-    digitalWrite(LED_BUILTIN, HIGH);
+// Interrupt for reading the rotary encoder position
+  rotaryEncoder.encoder0Pos = 0;
+  attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoder, CHANGE);
 
-  // configure gpio pins for rotary encoder
-    pinMode(encoder0Press,  INPUT_PULLUP);
-    pinMode(encoder0PinA,   INPUT);
-    pinMode(encoder0PinB,   INPUT);
+//Starting the DMX interpreter
+  dmxInput.begin(DMX_INPUT_PIN, 1, NUM_CHANNELS); // ------------------------------- NEED TO CHANGE TO START_CHANNEL ---------------------------
+  dmxInput.read_async(buffer);
 
-  // initialise the oled display
+// Starting the PWM Driver
+  //pwm.begin();
+  //pwm.setPWMFreq(50);
 
-    Wire.begin();
-    if(!display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR, true)) {
-      #ifdef DEBUG
-        Serial.println(("\nError initialising the oled display"));
-      #endif
-    }
-    Wire.setClock(100000);
+//Restore values from memory
+  readValuesFromFlash();
+  initialize_servos();
 
-  // Interrupt for reading the rotary encoder position
-    rotaryEncoder.encoder0Pos = 0;
-    attachInterrupt(digitalPinToInterrupt(encoder0PinA), doEncoder, CHANGE);
+  if(flash_buf_temp[NUM_CHANNELS+1] < 1 || flash_buf_temp[NUM_CHANNELS+1] >512){
+    START_CHANNEL = 1;
+  }
+  else{
+    START_CHANNEL = flash_buf_temp[NUM_CHANNELS*2];
+  }
+  
 
-  //Starting the DMX interpreter
-    dmxInput.begin(DMX_INPUT_PIN, 1, NUM_CHANNELS); // CHANGE TO START_CHANNEL
-    dmxInput.read_async(buffer);
-
-    initialize_servos();    //------------------------------------------------NEED TO CHANGE THIS ONE TO FLASH STORED VALUES
-
-  // Starting the PWM Driver
-    pwm.begin();
-    pwm.setPWMFreq(50);
-
-
-  // display greeting message - pressing button will start menu
-    displayMessage("DELED", "DMX Servo "+SOFTWARE_VERSION+"\nController");
-    display.display();
-    delay(2000);
-    idleMenu();
+// display greeting message - pressing button will start menu
+  displayMessage("DELED", "DMX Servo "+SOFTWARE_VERSION+"\nController");
+  display.display();
+  delay(2000);
+  idleMenu();
 }
 
 
@@ -230,16 +247,7 @@ void loop() {
   menuUpdate();          // update or action the oled menu
 }
 
-
-// Start the default menu
-void defaultMenu() {
-  idleMenu();
-}
-
 //--------------------------------------------------------------------------------------------------
-
-
-// a demonstration of how to create a menu
 // when an item is selected it is actioned in menuActions()
 void mainMenu() {
   resetMenu();                            // clear any previous menu
@@ -253,30 +261,32 @@ void mainMenu() {
   oledMenu.menuItems[4] = "Reset All";
   oledMenu.menuItems[5] = "Display Off";
   oledMenu.menuItems[6] = "Back";
+   #ifdef DEBUG
+    Serial.println("Main Menu selected");
+  #endif  
 }
 
 void limitsMenu() {
   resetMenu();                            // clear any previous menu
   menuMode = menu;                        // enable menu mode
   #ifdef DEBUG
-        Serial.println("menu: LIMITS");
-      #endif
+    Serial.println("menu: LIMITS");
+  #endif  
   String tList[]={"servo 1 - min", "servo 1 - max","servo 2 - min", "servo 2 - max","servo 3 - min", "servo 3 - max","servo 4 - min", "servo 4 - max","Back"};
   createList("Servo Limits", 9, &tList[0]);
 }
-
 //--------------------------------------------------------------------------------------------------           // BUILD SERVO LIMITS INTERACTION
 // Actions for menu selections are put in here
 
 void menuActions() {
   //podia ser uma declaracao tipo "CASE"
   if (oledMenu.menuTitle == "MENU") {    // actions when an item is selected in menu
+    
     // ADDRESS - 'enter a value' (none blocking)
     if (oledMenu.selectedMenuItem == 1) {
       #ifdef DEBUG
         Serial.println("menu: enter addr value");
       #endif
-      resetMenu();
       addr_changer();       // enter a value
     }
     // LIMITS create a menu from a list
@@ -295,7 +305,8 @@ void menuActions() {
       #ifdef DEBUG
         Serial.println("menu: RESET ALL");
       #endif
-      //-------------------------------------------------------RESET ALL FUNC
+      reset_servos();//-------------------------------------------------------RESET ALL FUNC / WIP create a confirmation page 
+      idleMenu();
     }
     // turn menu/oLED off            --  SCREEN OFF
     else if (oledMenu.selectedMenuItem == 5) {
@@ -381,7 +392,7 @@ void menuActions() {
 
 //--------------------------------------------------------------------------------------------------
 
-//    when an item is selected it is actioned in menuActions()
+//when an item is selected it is actioned in menuActions()
 void idleMenu() {
   resetMenu();                            // clear any previous menu
   menuMode = idle;                        // enable menu mode
@@ -391,13 +402,13 @@ void idleMenu() {
 //-------------------------------------------------------------------------------------------------- // DEVELOP DMX CHANGE START ADDRESS
 
 void addr_changer() {
-  resetMenu();                           // clear any previous menu
-  menuMode = value;                      // enable value entry
-  oledMenu.menuTitle = "DMX Address";    // title (used to identify which number was entered)
-  oledMenu.mValueLow = 0;                // minimum value allowed
-  oledMenu.mValueHigh = 512;             // maximum value allowed
-  oledMenu.mValueStep = 1;               // step size
-  oledMenu.mValueEntered = 50;           // starting value                  // VARIAVEL GLOBAL DE ENDEREÇO
+  resetMenu();                            // clear any previous menu
+  menuMode = value;                       // enable value entry
+  oledMenu.menuTitle = "DMX Address";     // title (used to identify which number was entered)
+  oledMenu.mValueLow = 0;                 // minimum value allowed
+  oledMenu.mValueHigh = 512;              // maximum value allowed
+  oledMenu.mValueStep = 1;                // step size
+  oledMenu.mValueEntered = START_CHANNEL; // starting value
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -426,6 +437,29 @@ void servo_max_changer(int idx) {
   oledMenu.mValueEntered = servos[idx-1].max_pos;
 }
 
+void servoMinValueAction(int idx) {
+  #ifdef DEBUG
+    Serial.print("Servo ");
+    Serial.print(idx);
+    Serial.print(" min value: The value entered was ");
+    Serial.println(oledMenu.mValueEntered);
+  #endif
+  servos[idx-1].min_pos = oledMenu.mValueEntered;
+  // Save servos to flash
+  writeValuesToFlash();
+}
+
+void servoMaxValueAction(int idx) {
+  #ifdef DEBUG
+    Serial.print("Servo ");
+    Serial.print(idx);
+    Serial.print(" max value: The value entered was ");
+    Serial.println(oledMenu.mValueEntered);
+  #endif
+  servos[idx-1].max_pos = oledMenu.mValueEntered;
+  // save servos to flash
+  writeValuesToFlash();
+}
 
 // ----------------------------------------------------------------
 //                   -button debounce (rotary encoder)
@@ -438,7 +472,9 @@ void reUpdateButton() {
       if (rotaryEncoder.encoderPrevButton == rotaryEncoder.reButtonPressedState) {
         if (rotaryEncoder.reButtonDebounced == 0) {    // if the button has been pressed
           rotaryEncoder.reButtonPressed = 1;           // flag set when the button has been pressed
-          if (menuMode == off) defaultMenu();          // if the display is off start the default menu
+          if (menuMode == off){
+            idleMenu();          // if the display is off start the default menu
+          }
         }
         rotaryEncoder.reButtonDebounced = 1;           // debounced button status  (1 when pressed)
       } else {
@@ -480,7 +516,9 @@ void menuUpdate() {
 
       // if a message is being displayed
       case message:
-        if (rotaryEncoder.reButtonPressed == 1) mainMenu();    // if button has been pressed return to default menu
+        if (rotaryEncoder.reButtonPressed == 1) {
+          mainMenu();    // if button has been pressed return to default menu
+        }
         break;
 
       // if DMX comm is lost while display is off (menuMode == off)
@@ -490,7 +528,9 @@ void menuUpdate() {
 
       case idle:
         idleDisplay();
-        if (rotaryEncoder.reButtonPressed == 1) mainMenu();    // if button has been pressed return to default menu
+        if (rotaryEncoder.reButtonPressed == 1) {
+          mainMenu();    // if button has been pressed return to default menu
+        }
         break;
     }
 }
@@ -501,13 +541,15 @@ void menuUpdate() {
 void menuValues() {
   // action for "DMX Address"
   if (oledMenu.menuTitle == "DMX Address") {
-    String tString = String(oledMenu.mValueEntered);
     #ifdef DEBUG
+      String tString = String(oledMenu.mValueEntered);
       Serial.println("DMX Address: The value entered was " + tString);
     #endif
-    limitsMenu();
-    // alternatively use 'resetMenu()' here to turn menus off after value entered - or use 'defaultMenu()' to re-start the default menu
+    START_CHANNEL = oledMenu.mValueEntered;
+    writeValuesToFlash();
+    mainMenu();
   }
+  //Action for servo limits
   if (oledMenu.menuTitle == "Servo 1 min value") {
     servoMinValueAction(1);
     limitsMenu();
@@ -542,36 +584,11 @@ void menuValues() {
   }
 }
 
-void servoMinValueAction(int idx) {
-  #ifdef DEBUG
-    Serial.print("Servo ");
-    Serial.print(idx);
-    Serial.print(" min value: The value entered was ");
-    Serial.println(oledMenu.mValueEntered);
-  #endif
-  servos[idx-1].min_pos = oledMenu.mValueEntered;
-  // Save servos to flash
-  //oledMenu.selectedMenuItem = 2;
-}
-
-void servoMaxValueAction(int idx) {
-  #ifdef DEBUG
-    Serial.print("Servo ");
-    Serial.print(idx);
-    Serial.print(" max value: The value entered was ");
-    Serial.println(oledMenu.mValueEntered);
-  #endif
-  servos[idx-1].max_pos = oledMenu.mValueEntered;
-  // save servos to flash
-  //oledMenu.selectedMenuItem = 2;
-}
-
 
 // ----------------------------------------------------------------
 //                       -service active menu
 // ----------------------------------------------------------------
 void serviceMenu() {
-
     // rotary encoder
       if (rotaryEncoder.encoder0Pos >= itemTrigger) {
         rotaryEncoder.encoder0Pos -= itemTrigger;
@@ -753,7 +770,6 @@ void createList(String _title, int _noOfElements, String *_list) {
 
  }
 
-
 // ----------------------------------------------------------------
 //                         -idle display
 // ----------------------------------------------------------------             // ADD blinking screen when no dmx signal (no_dmx_flag == true)
@@ -817,7 +833,6 @@ void idleDisplay(){
     display.display();
 }
 
-
 // ----------------------------------------------------------------
 //                        -reset menu system
 // ----------------------------------------------------------------
@@ -839,7 +854,6 @@ void resetMenu() {
     display.display();
 }
 
-
 // ----------------------------------------------------------------
 //                     -Handle DMX received inputs
 // ----------------------------------------------------------------
@@ -850,8 +864,8 @@ void handle_dmx_message() {
             Serial.println("no data!");
         #endif
         #endif
-        digitalWrite(LED_BUILTIN, HIGH);
-        no_dmx_flag = true;
+          digitalWrite(LED_BUILTIN, HIGH);
+          no_dmx_flag = true;
         return;
     }
     else{
@@ -867,26 +881,79 @@ void handle_dmx_message() {
     digitalWrite(LED_BUILTIN, ledState);
 }
 
-
 // ----------------------------------------------------------------
 //                     -Handle Servo data
 // ----------------------------------------------------------------
 void initialize_servos() {
-    for (int i = 0; i < NUM_CHANNELS; i++) {
-      servos[i].dmx_channel = i+1;
-      servos[i].pwm_channel = i;
-      servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
-      servos[i].min_pos = DEFAULT_SERVO_MIN;
-      servos[i].max_pos = DEFAULT_SERVO_MAX;
-      servos[i].last_update = 0;
+  for (int i = 0; i < NUM_CHANNELS; i++) {
+    servos[i].dmx_channel = i+1;
+    servos[i].pwm_channel = i;
+    servos[i].dmx_value = DEFAULT_SERVO_DMX_VALUE;
+    servos[i].last_update = 0;
+
+    if (flash_buf_temp[i*2] < SERVO_ABSOLUTE_MIN) {
+      #ifdef DEBUG
+      Serial.print("Warning: Value for min_pos at channel ");
+      Serial.print(i);
+      Serial.print(" is below bounds. Setting to SERVO_ABSOLUTE_MIN: ");
+      Serial.println(SERVO_ABSOLUTE_MIN);
+      #endif
+      servos[i].min_pos = SERVO_ABSOLUTE_MIN;
     }
+    else if (flash_buf_temp[i*2] > SERVO_ABSOLUTE_MAX) {
+      #ifdef DEBUG
+        Serial.print("Warning: Value for min_pos at channel ");
+        Serial.print(i);
+        Serial.print(" is above bounds. Setting to SERVO_ABSOLUTE_MAX: ");
+        Serial.println(SERVO_ABSOLUTE_MAX);
+      #endif
+      servos[i].min_pos = SERVO_ABSOLUTE_MAX;
+    }
+    else{
+      servos[i].min_pos = flash_buf_temp[i*2];
+    }
+    
+    if (flash_buf_temp[1+i*2] < SERVO_ABSOLUTE_MIN) {
+      #ifdef DEBUG
+        Serial.print("Warning: Value for max_pos at channel ");
+        Serial.print(i);
+        Serial.print(" is below bounds. Setting to SERVO_ABSOLUTE_MIN: ");
+        Serial.println(SERVO_ABSOLUTE_MIN);
+      #endif
+      servos[i].max_pos = SERVO_ABSOLUTE_MIN;
+    }
+    else if (flash_buf_temp[1+i*2] > SERVO_ABSOLUTE_MAX) {
+      #ifdef DEBUG
+        Serial.print("Warning: Value for max_pos at channel ");
+        Serial.print(i);
+        Serial.print(" is above bounds. Setting to SERVO_ABSOLUTE_MAX: ");
+        Serial.println(SERVO_ABSOLUTE_MAX);
+      #endif
+      servos[i].max_pos = SERVO_ABSOLUTE_MAX;
+    }
+    else{
+      servos[i].max_pos = flash_buf_temp[1+i*2];
+    }
+  }
+}
+
+void reset_servos() {
+  for (int i = 0; i < NUM_CHANNELS; i++) {
+    servos[i].dmx_channel = i+1;
+    servos[i].pwm_channel = i;
+    servos[i].dmx_value   = DEFAULT_SERVO_DMX_VALUE;
+    servos[i].min_pos     = DEFAULT_SERVO_MIN;
+    servos[i].max_pos     = DEFAULT_SERVO_MAX;
+    servos[i].last_update = 0;
+  }
+  writeValuesToFlash();
 }
 
 void update_servo(struct Servo *servo, int new_dmx_value) {
     servo->dmx_value = new_dmx_value;
     servo->last_update = millis();
     int pos = map(servo->dmx_value, 0, 255, servo->min_pos, servo->max_pos);
-    pwm.setPWM(servo->pwm_channel, 0, pos);
+    //pwm.setPWM(servo->pwm_channel, 0, pos);
     #ifdef DEBUG
     #ifdef PRINT_DMX_MESSAGES
         Serial.print("dmx_value: ");
@@ -902,12 +969,86 @@ void update_servo(struct Servo *servo, int new_dmx_value) {
     #endif
 }
 // -------------------------------------------------------------------------
-//                             Read Flash memory 
+//                               Flash memory 
 // -------------------------------------------------------------------------
 
+int find_free_memory_page() {
+  int first_empty_page = -1;
+  int mem_addr;
+  unsigned int page;
+  for(page = 0; page < FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE; page++){
+      mem_addr = XIP_BASE + FLASH_TARGET_OFFSET + (page * FLASH_PAGE_SIZE);
+      uint16_t *p = (uint16_t *)mem_addr;
+      if( *p == 0xFFFF && first_empty_page < 0){
+          first_empty_page = page;
+          break;
+      }
+  }
+  #ifdef DEBUG
+    Serial.println("[DEBUG] First empty page found at: " + String(first_empty_page));
+  #endif
+  return first_empty_page;
+}
 
+void writeValuesToFlash() {
+    int first_empty_page = find_free_memory_page();
+    if (first_empty_page < 0){
+        uint32_t ints = save_and_disable_interrupts();
+        flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
+        first_empty_page = 0;
+        restore_interrupts (ints);
+        #ifdef DEBUG
+          Serial.println("[DEBUG] Erased flash sector.");
+        #endif
+    }
+    // Fetch servo min and max pos from struct + dmx addr
+    for(int i = 0; i < NUM_CHANNELS; i++) {
+        flash_buf_temp[i*2]   = servos[i].min_pos;
+        flash_buf_temp[1+i*2] = servos[i].max_pos;
+    }
+    flash_buf_temp[NUM_CHANNELS*2] = START_CHANNEL;
 
+    // Copy values to flash buffer
+    for(int i = 0; i < NUM_CHANNELS*2+1; i++) {
+        flash_buf[i] = flash_buf_temp[i];
+    }
+    uint32_t ints = save_and_disable_interrupts();
+    flash_range_program(FLASH_TARGET_OFFSET + (first_empty_page*FLASH_PAGE_SIZE), (uint8_t *)flash_buf, FLASH_PAGE_SIZE);
+    restore_interrupts (ints);
+    #ifdef DEBUG
+    Serial.println("[DEBUG] WRITE from memory:");
+    for(int i = 0; i < NUM_CHANNELS*2+1; i++) {
+        Serial.println(flash_buf_temp[i]);
+    }
+    Serial.println("[DEBUG]");
+    #endif
+}
 
+void readValuesFromFlash() {
+    int last_valid_page = -1;
+    int mem_addr;
+    for(unsigned int page = (FLASH_SECTOR_SIZE/FLASH_PAGE_SIZE) - 1; page >= 0; page--){
+        mem_addr = XIP_BASE + FLASH_TARGET_OFFSET + (page * FLASH_PAGE_SIZE);
+        uint16_t *p = (uint16_t *)mem_addr;
+        if( *p != 0xFFFF){
+            last_valid_page = page;
+            break;
+        }
+    }
+    if(last_valid_page >= 0) {
+        uint16_t *p = (uint16_t *)(XIP_BASE + FLASH_TARGET_OFFSET + (last_valid_page * FLASH_PAGE_SIZE));
+        for(int i = 0; i < NUM_CHANNELS*2+1; i++) {
+            flash_buf_temp[i] = p[i];
+        }
+        #ifdef DEBUG
+          Serial.println("[DEBUG] READ from memory:");
+          for(int i = 0; i < NUM_CHANNELS*2+1; i++) {
+              Serial.println(flash_buf_temp[i]);
+          }
+          Serial.println("[DEBUG]");
+        #endif
+    }
+}
 
 
 // -------------------------------------------------------------------------
@@ -943,6 +1084,5 @@ void doEncoder() {
     rotaryEncoder.encoderPrevA = pinA;
     rotaryEncoder.encoderPrevB = pinB;
 }
-
 
 // ---------------------------------------------- end ----------------------------------------------
