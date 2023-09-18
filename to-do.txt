@@ -1,0 +1,86 @@
+- ao confirmar valores de range o menu voltar para o item selecioonado previo
+ex,> se voce editou o min pos servo 2 : apos confirmar o valor ele voltar para o menu de range com o item min pos servo 2 selecionado 
+
+
+-a opção de "reset all" pode continuar no menu inicial se resetar tambem no dmx, ou entao entrar para o menu de "Limits" e so resetar os limites. 
+ 
+
+-2FA verificação (dupla) adicional de reseetar todos os valores das posições "Reset all" iE.: tela de CONFIRMAR 
+
+-Refazer menus parar legibilidade do codigo
+
+-Vale reeescrever tudo em micropython ? 
+
+-ajustar a excursão de min e max pos em multiplos de 180º 
+para fazer o marketing de resolução em graus : ex. : controle com uma precisao de 0.5º qualquer servo 
+
+- reseolver bug de hardware com o PCA9685 - integrar na placa 
+
+- mudar posição dos conectores ao longo da placa
+	cabos curtos e posições ruims para montagem em gabinete metálico
+
+-aumentar tela e procurar modelo ou técnica que seja mais facil de encaixar no gabinete metálico 
+
+-Testar código de mudar START CHANNEL DMX512 
+
+-Criar headers nao povoados para acesso ao barramento de comunicação e debug de linhas importantes
+
+
+- Medir corrente dos servos e revisao do dimensionamento da fonte, deixar a caixa menor é melhor
+
+
+-Criar headers de acesso aos GPIOS do PI para adicionar novas funcionalidades caso necessário 
+
+
+-Placa filha: inverter ordem dos pinos de saída (correto: GND, V+, SIG)
+
+-Placa filha: adicionar headers padrão 0.1" para conectar direto cabos de servo 
+
+
+-Criar adesivo ou silk ou laser para marcação e gravação de informações importantes no gabinete metalico
+
+
+
+---------------------------------------------------------
+
+
+- when confirming range values the menu returns to the previously selected item
+ex,> if you edited the min pos servo 2: after confirming the value it will return to the range menu with the min pos servo 2 item selected
+
+
+-the "reset all" option can remain in the initial menu if you also reset the dmx, or go to the "Limits" menu and just reset the limits.
+ 
+
+-2FA additional (double) check to reset all position values "Reset all" iE.: CONFIRM screen
+
+-Redo menus to improve code readability
+
+-Is it worth rewriting everything in Micropython?
+
+-adjust the min and max pos excursion in multiples of 180º
+to do resolution marketing in degrees: e.g. : control with an accuracy of 0.5º any servo
+
+- solve hardware bug with PCA9685 - integrate on board
+
+- change the position of the connectors along the board
+short cables and poor positions for mounting in a metal cabinet
+
+-enlarge the screen and look for a model or technique that is easier to fit into the metal cabinet
+
+-Test code to change START CHANNEL DMX512
+
+-Create unpopulated headers to access the communication bus and debug important lines
+
+
+- Measure servo current and review the power supply sizing, making the box smaller is better
+
+
+-Create access headers to PI GPIOS to add new features if necessary
+
+
+-Daughter board: reverse order of output pins (correct: GND, V+, SIG)
+
+-Daughter board: add standard 0.1" headers to directly connect servo cables
+
+
+-Create sticker or silk or laser to mark and engrave important information on the metal cabinet
